@@ -1,6 +1,8 @@
 import 'package:app/view/widgets/small_text.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/dimensionScale.dart';
+
 class TextAndIconWidget extends StatelessWidget {
   final IconData icon;
   final String text;
@@ -10,8 +12,8 @@ class TextAndIconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      Icon(icon,color: color,size:25),
-      SizedBox(width: 10,),
+      Icon(icon,color: color,size:Dimension.scaleHeight(20.0)),
+      SizedBox(width: Dimension.scaleWidth(2.0),),
       SmallText(text: text)
 
 

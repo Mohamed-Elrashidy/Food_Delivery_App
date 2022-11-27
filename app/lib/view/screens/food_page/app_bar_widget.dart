@@ -3,6 +3,7 @@ import 'package:app/view/widgets/small_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/colors.dart';
+import '../../../utils/dimensionScale.dart';
 
 class AppBarWidget extends StatefulWidget {
   const AppBarWidget({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class AppBarWidget extends StatefulWidget {
 class _AppBarWidgetState extends State<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(padding: EdgeInsets.all(12),
+    return Container(padding: EdgeInsets.all(Dimension.scaleWidth(12.0)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -34,12 +35,12 @@ class _AppBarWidgetState extends State<AppBarWidget> {
             ],
           ),
           InkWell(
-            child: Container(height: 40,
-            width: 40,
+            child: Container(height: Dimension.scaleHeight(40.0),
+            width: Dimension.scaleHeight(40.0),
             decoration: BoxDecoration(color: AppColors.mainColor,
 
-            borderRadius: BorderRadius.circular(12)),
-            child: Icon(Icons.search,size:20),
+            borderRadius: BorderRadius.circular(Dimension.scaleHeight(12.0))),
+            child: Icon(Icons.search,size:Dimension.scaleHeight(20.0)),
             ),
           )
         ],
