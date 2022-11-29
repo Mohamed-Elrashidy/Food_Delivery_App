@@ -48,7 +48,6 @@ class FoodPagePopular extends StatelessWidget {
         itemCount: 5,
         itemBuilder: (_,index)=>Container(
           margin: EdgeInsets.symmetric(vertical: (Dimension.scaleHeight(10)), horizontal: Dimension.scaleWidth(10)),
-          
           child:Row(
             children: [
               ClipRRect(

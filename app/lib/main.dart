@@ -1,4 +1,6 @@
 import 'package:app/view/screens/food_page/main_food_page.dart';
+import 'package:app/view/screens/popular_food_detail/popular_food_detail.dart';
+import 'package:app/view/screens/recommended_screen/recommended_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 void main() {
@@ -14,9 +16,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        backgroundColor: Colors.white,
         primarySwatch: Colors.blue,
       ),
-      home: MainFoodpage()
+      //home:MainFoodpage()
+      home: RecommendedPage()
     );
   }
 }
