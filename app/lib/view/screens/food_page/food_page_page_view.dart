@@ -1,8 +1,12 @@
+import 'package:app/controller/popular_product_controller.dart';
+import 'package:app/model/product.dart';
+import 'package:app/utils/app_constants.dart';
 import 'package:app/utils/colors.dart';
 import 'package:app/view/widgets/small_text.dart';
 import 'package:app/view/widgets/text_and_icon.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../utils/dimensionScale.dart';
 import '../../widgets/bit_text.dart';
@@ -32,25 +36,29 @@ class _FoodPageViewWidgetState extends State<FoodPageViewWidget> {
     });
     return Column(
       children: [
-        SizedBox(
+      GetBuilder<PopularProductController>(builder: (popularProducts)
+      {
+        return         popularProducts.isLoaded?SizedBox(
           height: Dimension.scaleHeight(250.0),
           child: PageView.builder(
             controller: pageController,
-            itemCount: 5,
+            itemCount: popularProducts.popularProductList.length,
             itemBuilder: (_, index) => Container(
                 padding: EdgeInsets.all(Dimension.scaleWidth(8.0)),
                 // color: Colors.red,
 
-                child: itemBuilder(index)),
+                child: itemBuilder(index,popularProducts.popularProductList[index])),
           ),
-        ),
+        ):CircularProgressIndicator();
+
+      }),
         SizedBox(height: Dimension.scaleHeight(15),),
         dotsView()
       ],
     );
   }
 
-  Widget itemBuilder(int index) {
+  Widget itemBuilder(int index,ProductModel popularProduct) {
     Matrix4 matrix = Matrix4.identity();
     if (_currPageValue.floor() == index) {
       var currScale = 1 - (_currPageValue - index) * (1 - _scaleFactor);
@@ -69,17 +77,17 @@ class _FoodPageViewWidgetState extends State<FoodPageViewWidget> {
       transform: matrix,
       child: Stack(
         children: [
-          photoWidget(),
+          photoWidget(AppConstants.BASE_URI+"/uploads/"+popularProduct.img!),
           Align(
             alignment: Alignment.bottomCenter,
-            child: dataWidget(),
+            child: dataWidget(popularProduct),
           )
         ],
       ),
     );
   }
 
-  Widget photoWidget() {
+  Widget photoWidget(String imgUri) {
     return Container(
         height: Dimension.scaleHeight(160),
         width: double.infinity,
@@ -88,8 +96,8 @@ class _FoodPageViewWidgetState extends State<FoodPageViewWidget> {
             borderRadius: BorderRadius.circular(Dimension.scaleHeight(20.0))),
         child: ClipRRect(
             borderRadius: BorderRadius.circular(Dimension.scaleHeight(20.0)),
-            child: Image.asset(
-              "assets/image/food0.png",
+            child: Image.network(
+              imgUri,
               fit: BoxFit.cover,
               cacheHeight:Dimension.scaleHeight(160).ceil() ,
 
@@ -97,18 +105,21 @@ class _FoodPageViewWidgetState extends State<FoodPageViewWidget> {
   }
   Widget dotsView()
   {
-    return DotsIndicator(
-        dotsCount: 5,
+    return GetBuilder<PopularProductController>(builder: (popularProduct)
+    {
+      return DotsIndicator(
+        dotsCount: popularProduct.popularProductList.length<=0?1:popularProduct.popularProductList.length,
         position: _currPageValue,
         decorator: DotsDecorator(
-        size: const Size.square(9.0),
-    activeSize: const Size(18.0, 9.0),
-    activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-    ),
-    );
+          size: const Size.square(9.0),
+          activeSize: const Size(18.0, 9.0),
+          activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+        ),
+      );
+    });
   }
 
-  Widget dataWidget() {
+  Widget dataWidget(ProductModel productModel) {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimension.scaleHeight(16.0)),
@@ -124,7 +135,7 @@ class _FoodPageViewWidgetState extends State<FoodPageViewWidget> {
       //width:Dimension.scaleWidth(320),
       margin: EdgeInsets.symmetric(horizontal: Dimension.scaleWidth(15.0)),
       padding: EdgeInsets.symmetric(horizontal: Dimension.scaleWidth(15.0), vertical: Dimension.scaleHeight(8.0)),
-      child: DataView(),
+      child: DataView(productModel),
     );
   }
 }

@@ -12,7 +12,7 @@ class TextAndIconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      Icon(icon,color: color,size:Dimension.scaleHeight(20.0)),
+      Icon(icon,color: color,size:Dimension.scaleWidth(20.0)),
       SizedBox(width: Dimension.scaleWidth(2.0),),
       SmallText(text: text)
 

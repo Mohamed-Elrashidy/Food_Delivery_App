@@ -1,3 +1,4 @@
+import 'package:app/model/product.dart';
 import 'package:app/utils/colors.dart';
 import 'package:app/view/widgets/bit_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,8 +8,8 @@ import '../../widgets/app_icon.dart';
 import '../../widgets/data_view.dart';
 
 class PopularFoodDetails extends StatelessWidget {
-  const PopularFoodDetails({Key? key}) : super(key: key);
-
+   PopularFoodDetails({Key? key}) : super(key: key);
+ProductModel productModel=ProductModel();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,60 +21,7 @@ class PopularFoodDetails extends StatelessWidget {
           titleWidgets(),
         ],
       ),
-      bottomNavigationBar:  Container(
-        decoration: BoxDecoration(
-        //  color:Color.fromARGB(16, 217, 217, 222),
-         color:Colors.black12,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(Dimension.scaleHeight(20)),
-              topRight: Radius.circular(Dimension.scaleHeight(20))),
-          // color: Colors.black12,
-        ),
-        padding: EdgeInsets.symmetric(
-            vertical: Dimension.scaleHeight(20),
-            horizontal: Dimension.scaleWidth(20)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                    BorderRadius.circular(Dimension.scaleHeight(24))),
-                child: Row(
-                  children: [
-                    InkWell(
-                        child: Container(
-                          color: Colors.black45,
-                          height: Dimension.scaleHeight(2),
-                          width: Dimension.scaleWidth(13),
-                        )),
-                    SizedBox(width: Dimension.scaleWidth(10)),
-                    BigText(text: '1', size: Dimension.scaleHeight(24)),
-                    SizedBox(
-                      width: Dimension.scaleWidth(10),
-                    ),
-                    InkWell(
-                        child: Icon(Icons.add,
-                            color: Colors.black45,
-                            size: Dimension.scaleHeight(24)))
-                  ],
-                ),
-                padding: EdgeInsets.symmetric(
-                    vertical: Dimension.scaleHeight(20),
-                    horizontal: Dimension.scaleWidth(20))),
-            Container(
-                padding: EdgeInsets.symmetric(
-                    vertical: Dimension.scaleHeight(20),
-                    horizontal: Dimension.scaleWidth(15)),
-                decoration: BoxDecoration(
-                    color: AppColors.mainColor,
-                    borderRadius:
-                    BorderRadius.circular(Dimension.scaleHeight(20))),
-                child: BigText(text: "\$0.8 Add To Cart"))
-          ],
-        ),
-      ),
+      bottomNavigationBar: bottomNavigationBarBuilder(),
     );
   }
   Widget bottomNavigationBarBuilder()
@@ -181,7 +129,7 @@ class PopularFoodDetails extends StatelessWidget {
                       vertical: Dimension.scaleHeight(10),
                       horizontal: Dimension.scaleWidth(20),
                     ),
-                    child: DataView())),
+                    child: DataView(productModel))),
           ],
         ),
       ),

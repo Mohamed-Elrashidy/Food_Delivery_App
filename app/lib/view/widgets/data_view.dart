@@ -3,13 +3,15 @@ import 'package:app/view/widgets/text_and_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../model/product.dart';
 import '../../utils/colors.dart';
 import '../../utils/dimensionScale.dart';
 import 'bit_text.dart';
 import 'expandable_text_widget.dart';
 
 class DataView extends StatelessWidget {
-  const DataView({Key? key}) : super(key: key);
+  ProductModel productModel;
+   DataView(this.productModel);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class DataView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           BigText(
-            text: "Chineese food",
+            text: productModel.name!,
           ),
           SizedBox(
             height: Dimension.scaleHeight(8.0),
@@ -66,7 +68,8 @@ class DataView extends StatelessWidget {
                   icon: Icons.access_time),
             ],
           ),
-      ExpandableTextWidget(text:"dskajfkdjfklasjdfkasjf;klasjfkasjfskdfjaskjfsdkjfskldjfskldfjakljfsklfjaskljfskldfjskjfklsjfskldjfksdjfiwejrioefskdckwefjifjklsfjiejfkldsfnmaweiofjwkfnweiofjoiefjainofefua")        ],
+      //ExpandableTextWidget(text:"dskajfkdjfklasjdfkasjf;klasjfkasjfskdfjaskjfsdkjfskldjfskldfjakljfsklfjaskljfskldfjskjfklsjfskldjfksdjfiwejrioefskdckwefjifjklsfjiejfkldsfnmaweiofjwkfnweiofjoiefjainofefua")
+      ],
       ),
     );
   }

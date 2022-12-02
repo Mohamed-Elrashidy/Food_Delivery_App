@@ -1,11 +1,14 @@
 
+import 'package:app/controller/popular_product_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/dimensionScale.dart';
 import '../../widgets/app_icon.dart';
 
 class RecommendedPage extends StatelessWidget {
+
   const RecommendedPage({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +27,18 @@ body:CustomScrollView(
     title: Container(
 
       color: Colors.transparent,
-      child:Expanded(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children:[
+      child:Column(
+        children: [
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children:[
  AppIcon(icon:Icons.highlight_remove_outlined),
  AppIcon(icon:Icons.shopping_cart_outlined)
-          ]
-        ),
+              ]
+            ),
+          ),
+        ],
       )
     ),
     )
