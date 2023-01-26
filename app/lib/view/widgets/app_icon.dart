@@ -9,10 +9,12 @@ import '../../utils/dimensionScale.dart';
 class AppIcon extends StatelessWidget {
  final IconData icon;
  final  ontap;
-  const AppIcon({required this.icon, this.ontap});
+  final  color;
+  const AppIcon({required this.icon, this.ontap,this.color,});
 
   @override
   Widget build(BuildContext context) {
+    print("lets test color"+color.toString());
     return  InkWell(
       onTap:
 ontap            ,
@@ -20,7 +22,7 @@ ontap            ,
           padding: EdgeInsets.only(left: Dimension.scaleHeight(4)),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimension.scaleHeight(30)),
-            color: Colors.white.withOpacity(0.7),
+            color:(color==null)? Colors.white.withOpacity(0.7):color,
           ),
           height: Dimension.scaleHeight(45),
           width: Dimension.scaleHeight(45),

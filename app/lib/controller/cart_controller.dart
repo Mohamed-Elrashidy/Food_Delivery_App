@@ -75,4 +75,38 @@ class CartController extends GetxController {
     });
     return total;
   }
+
+  List<CartModel> get listOfCartItems{
+    return items.entries.map((e){
+      return e.value;
+    }).toList();
+  }
+
+  void addToCart(int id)
+  {
+    items.update(id, (value) => CartModel(
+        id: items[id]!.id,
+        name: items[id]!.name,
+        price: items[id]!.price,
+        img: items[id]!.img,
+        quantity: items[id]!.quantity!+1,
+        isExit: true,
+        time: DateTime.now().toString()));
+    update();
+  }
+  void removeFromCart(int id)
+  {
+    items.update(id, (value) => CartModel(
+        id: items[id]!.id,
+        name: items[id]!.name,
+        price: items[id]!.price,
+        img: items[id]!.img,
+        quantity: items[id]!.quantity!-1,
+        isExit: true,
+        time: DateTime.now().toString()));
+    if(items[id]!.quantity==0)
+      items.remove(id);
+    update();
+  }
+
 }

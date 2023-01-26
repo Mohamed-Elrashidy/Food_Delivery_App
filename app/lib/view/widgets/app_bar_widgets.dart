@@ -1,4 +1,5 @@
 import 'package:app/controller/cart_controller.dart';
+import 'package:app/view/screens/cart_screen/cart_page.dart';
 import 'package:app/view/widgets/small_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,22 +27,27 @@ class AppBarWidgets extends StatelessWidget {
               Get.back();
             },
           ),
-          Stack(
-            alignment: Alignment.topRight,
-            children: [
-              AppIcon(icon: Icons.shopping_cart),
-              (recommendedProductControl.totatItems != 0)
-                  ? CircleAvatar(
-                maxRadius: Dimension.scaleWidth(10),
-                child: SmallText(
-                  text: recommendedProductControl.totatItems.toString(),
-                  size: 10,
-                  color: Colors.white,
-                ),
-                backgroundColor: AppColors.mainColor,
-              )
-                  : Container()
-            ],
+          InkWell(
+            onTap: (){
+              Get.to(CartPage());
+            },
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: [
+                AppIcon(icon: Icons.shopping_cart),
+                (recommendedProductControl.totatItems != 0)
+                    ? CircleAvatar(
+                  maxRadius: Dimension.scaleWidth(10),
+                  child: SmallText(
+                    text: recommendedProductControl.totatItems.toString(),
+                    size: 10,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: AppColors.mainColor,
+                )
+                    : Container()
+              ],
+            ),
           )
         ],
       );

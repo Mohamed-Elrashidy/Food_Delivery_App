@@ -2,6 +2,7 @@ import 'package:app/controller/cart_controller.dart';
 import 'package:app/model/product.dart';
 import 'package:app/utils/app_constants.dart';
 import 'package:app/utils/colors.dart';
+import 'package:app/view/widgets/app_bar_widgets.dart';
 import 'package:app/view/widgets/bit_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -137,34 +138,7 @@ class PopularFoodDetails extends StatelessWidget {
         left: Dimension.scaleWidth(10),
         top: Dimension.scaleHeight(40),
         right: Dimension.scaleWidth(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            AppIcon(
-              icon: Icons.arrow_back_ios,
-              ontap: () {
-                Get.back();
-              },
-            ),
-            Stack(
-              alignment: Alignment.topRight,
-              children: [
-                AppIcon(icon: Icons.shopping_cart),
-                (recommendProductControl.totatItems != 0)
-                    ? CircleAvatar(
-                        maxRadius: Dimension.scaleWidth(10),
-                        child: SmallText(
-                          text: recommendProductControl.totatItems.toString(),
-                          size: 10,
-                          color: Colors.white,
-                        ),
-                        backgroundColor: AppColors.mainColor,
-                      )
-                    : Container()
-              ],
-            )
-          ],
-        ),
+        child: AppBarWidgets(),
       );
     });
   }
