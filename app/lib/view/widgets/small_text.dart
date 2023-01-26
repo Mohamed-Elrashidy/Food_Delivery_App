@@ -19,11 +19,12 @@ class SmallText extends StatelessWidget {
     return Container(
       child: Text(text,style: TextStyle(
 
+
         color: color,
         fontSize: size,
         height: height
       ),
-
+maxLines: 10,
       ),
     );
   }

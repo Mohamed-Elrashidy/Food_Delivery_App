@@ -26,8 +26,16 @@ class _ExpandableTextWidgetState extends State<ExpandableTextWidget> {
     int tot=widget.text.length;
     if (widget.text.length > textHeight) {
       hiddenText = true;
+      print(widget.text);
+      print("//////////////////////////////////////////////////");
       firstText = widget.text.substring(0, textHeight);
-      secondText = widget.text.substring(textHeight + 1, tot);
+      print(firstText);
+      print('//////////////////////');
+      print(widget.text);
+
+      secondText = widget.text.substring(textHeight + 1, widget.text.length);
+    print(secondText);
+    print('//////////////////////');
     } else {
       firstText = widget.text;
       secondText = "";
@@ -57,7 +65,7 @@ class _ExpandableTextWidgetState extends State<ExpandableTextWidget> {
                           SmallText(
                               text: firstText, size: 16,  ),
                           SmallText(
-                              text: firstText, size: 16,)
+                              text: secondText, size: 16,)
                         ],
                       ),
             secondText == ""

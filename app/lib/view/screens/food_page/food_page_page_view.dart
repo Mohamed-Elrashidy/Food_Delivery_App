@@ -1,7 +1,9 @@
 import 'package:app/controller/popular_product_controller.dart';
 import 'package:app/model/product.dart';
+import 'package:app/routes/route_helper.dart';
 import 'package:app/utils/app_constants.dart';
 import 'package:app/utils/colors.dart';
+import 'package:app/view/screens/food_page/food_page_popular.dart';
 import 'package:app/view/widgets/small_text.dart';
 import 'package:app/view/widgets/text_and_icon.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -11,6 +13,7 @@ import 'package:get/get.dart';
 import '../../../utils/dimensionScale.dart';
 import '../../widgets/bit_text.dart';
 import '../../widgets/data_view.dart';
+import '../popular_food_detail/popular_food_detail.dart';
 
 class FoodPageViewWidget extends StatefulWidget {
   @override
@@ -39,15 +42,20 @@ class _FoodPageViewWidgetState extends State<FoodPageViewWidget> {
       GetBuilder<PopularProductController>(builder: (popularProducts)
       {
         return         popularProducts.isLoaded?SizedBox(
-          height: Dimension.scaleHeight(250.0),
+          height: Dimension.scaleHeight(210.0),
           child: PageView.builder(
             controller: pageController,
             itemCount: popularProducts.popularProductList.length,
-            itemBuilder: (_, index) => Container(
-                padding: EdgeInsets.all(Dimension.scaleWidth(8.0)),
-                // color: Colors.red,
+            itemBuilder: (_, index) => GestureDetector(
+              onTap: (){
+                Get.toNamed(RouteHelper.popularFood,arguments: [ popularProducts.popularProductList[index]]);
+              },
+              child: Container(
+                  padding: EdgeInsets.all(Dimension.scaleWidth(8.0)),
+                  // color: Colors.red,
 
-                child: itemBuilder(index,popularProducts.popularProductList[index])),
+                  child: itemBuilder(index,popularProducts.popularProductList[index])),
+            ),
           ),
         ):CircularProgressIndicator();
 
@@ -77,7 +85,7 @@ class _FoodPageViewWidgetState extends State<FoodPageViewWidget> {
       transform: matrix,
       child: Stack(
         children: [
-          photoWidget(AppConstants.BASE_URI+"/uploads/"+popularProduct.img!),
+          photoWidget(AppConstants.BASE_URI+AppConstants.UPLOAD_URL+popularProduct.img!),
           Align(
             alignment: Alignment.bottomCenter,
             child: dataWidget(popularProduct),
@@ -89,7 +97,7 @@ class _FoodPageViewWidgetState extends State<FoodPageViewWidget> {
 
   Widget photoWidget(String imgUri) {
     return Container(
-        height: Dimension.scaleHeight(160),
+        height: Dimension.scaleHeight(140),
         width: double.infinity,
         decoration: BoxDecoration(
             color: Colors.green,
@@ -131,7 +139,7 @@ class _FoodPageViewWidgetState extends State<FoodPageViewWidget> {
                 color: Colors.white, blurRadius: 5, offset: Offset(-5, 0)),
             BoxShadow(color: Colors.white, blurRadius: 5, offset: Offset(5, 0))
           ]),
-      height: Dimension.scaleHeight(100.0),
+      height: Dimension.scaleHeight(85.0),
       //width:Dimension.scaleWidth(320),
       margin: EdgeInsets.symmetric(horizontal: Dimension.scaleWidth(15.0)),
       padding: EdgeInsets.symmetric(horizontal: Dimension.scaleWidth(15.0), vertical: Dimension.scaleHeight(8.0)),

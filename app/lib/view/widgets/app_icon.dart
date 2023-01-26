@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../../utils/colors.dart';
 
@@ -6,11 +8,14 @@ import '../../utils/dimensionScale.dart';
 
 class AppIcon extends StatelessWidget {
  final IconData icon;
-  const AppIcon({required this.icon});
+ final  ontap;
+  const AppIcon({required this.icon, this.ontap});
 
   @override
   Widget build(BuildContext context) {
     return  InkWell(
+      onTap:
+ontap            ,
         child: Container(
           padding: EdgeInsets.only(left: Dimension.scaleHeight(4)),
           decoration: BoxDecoration(

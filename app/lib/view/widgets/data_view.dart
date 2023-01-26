@@ -16,17 +16,17 @@ class DataView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+
      // margin: EdgeInsets.symmetric(horizontal: Dimension.scaleWidth(15.0)),
       //padding: EdgeInsets.symmetric(horizontal: Dimension.scaleWidth(15.0), vertical: Dimension.scaleHeight(8.0)),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           BigText(
             text: productModel.name!,
           ),
-          SizedBox(
-            height: Dimension.scaleHeight(8.0),
-          ),
+
           Row(
             children: [
               SizedBox(
@@ -39,36 +39,37 @@ class DataView extends StatelessWidget {
                         Icon(Icons.star, color: AppColors.mainColor, size: 15)),
               ),
               SizedBox(
-                width: Dimension.scaleHeight(5.0),
+                width: Dimension.scaleHeight(3.0),
               ),
               SmallText(text: "4.5"),
               SizedBox(
-                width: Dimension.scaleWidth(8.0),
+                width: Dimension.scaleWidth(3.0),
               ),
               SmallText(text: "1278 comments"),
             ],
           ),
-          SizedBox(
-            height: Dimension.scaleHeight(13.0),
+
+          Container(
+            width: Dimension.screenWidth-50,
+
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextAndIconWidget(
+                    color: AppColors.iconColor1,
+                    text: "Normal",
+                    icon: Icons.circle),
+                TextAndIconWidget(
+                    color: AppColors.mainColor,
+                    text: "1.7Km",
+                    icon: Icons.location_on_rounded),
+                TextAndIconWidget(
+                    color: AppColors.iconColor2,
+                    text: "32min",
+                    icon: Icons.access_time),
+              ],
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextAndIconWidget(
-                  color: AppColors.iconColor1,
-                  text: "Normal",
-                  icon: Icons.circle),
-              TextAndIconWidget(
-                  color: AppColors.mainColor,
-                  text: "1.7Km",
-                  icon: Icons.location_on_rounded),
-              TextAndIconWidget(
-                  color: AppColors.iconColor2,
-                  text: "32min",
-                  icon: Icons.access_time),
-            ],
-          ),
-      //ExpandableTextWidget(text:"dskajfkdjfklasjdfkasjf;klasjfkasjfskdfjaskjfsdkjfskldjfskldfjakljfsklfjaskljfskldfjskjfklsjfskldjfksdjfiwejrioefskdckwefjifjklsfjiejfkldsfnmaweiofjwkfnweiofjoiefjainofefua")
       ],
       ),
     );

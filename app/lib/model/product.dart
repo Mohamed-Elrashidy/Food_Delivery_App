@@ -50,7 +50,7 @@ class ProductModel {
     this.createdAt,
     this.updatedAt,
     this.typeId
-});
+  });
   ProductModel.fromJson(Map<String,dynamic> json)
   {
     id=json['id'];
