@@ -27,6 +27,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   dots_indicator: ^2.1.0
+  persistent_bottom_nav_bar: ^5.0.2
+  shared_preferences: ^2.0.17
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

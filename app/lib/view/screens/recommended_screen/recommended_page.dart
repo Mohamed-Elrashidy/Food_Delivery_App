@@ -104,10 +104,10 @@ class RecommendedPage extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                BigText(
-                  text: "\$${productModel.price}  X " +
-                      (controller.quantity + controller.cartItem).toString(),
-                ),
+               GetBuilder<CartController>(builder:(_)=> BigText(
+                 text: "\$${productModel.price}  X " +
+                     (controller.quantity + controller.cartItem).toString(),
+               )),
                 SizedBox(
                   width: 10,
                 ),

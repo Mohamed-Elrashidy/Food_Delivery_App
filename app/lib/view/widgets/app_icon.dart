@@ -10,11 +10,13 @@ class AppIcon extends StatelessWidget {
  final IconData icon;
  final  ontap;
   final  color;
-  const AppIcon({required this.icon, this.ontap,this.color,});
+  final iconColor;
+  final size;
+  const AppIcon({required this.icon, this.ontap,this.color,this.iconColor,this.size});
 
   @override
   Widget build(BuildContext context) {
-    print("lets test color"+color.toString());
+    //print("lets test color"+color.toString());
     return  InkWell(
       onTap:
 ontap            ,
@@ -26,7 +28,7 @@ ontap            ,
           ),
           height: Dimension.scaleHeight(45),
           width: Dimension.scaleHeight(45),
-          child: Icon(icon, size: Dimension.scaleHeight(20),color:AppColors.mainBlackColor),
+          child: Icon(icon, size:size==null? Dimension.scaleHeight(24):size,color:iconColor==null?AppColors.mainBlackColor:iconColor),
         ));
   }
 }

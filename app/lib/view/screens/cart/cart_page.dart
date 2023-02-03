@@ -1,3 +1,5 @@
+import 'package:app/controller/popular_product_controller.dart';
+import 'package:app/controller/recommended_product_controller.dart';
 import 'package:app/model/cart_model.dart';
 import 'package:app/utils/colors.dart';
 import 'package:app/view/screens/food_page/main_food_page.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/cart_controller.dart';
+import '../../../routes/route_helper.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/dimensionScale.dart';
 import '../../widgets/app_icon.dart';
@@ -18,6 +21,7 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+      bottomNavigationBar: bottomNavigationBarBuilder(),
       body: Column(
         children: [
           AppBarWidget(),
@@ -52,7 +56,7 @@ class CartPage extends StatelessWidget {
             AppIcon(
               icon: Icons.home,
               ontap: () {
-                Get.to(MainFoodpage());
+                Get.toNamed(RouteHelper.intial);
               },
               color: AppColors.mainColor,
             ),
@@ -87,18 +91,40 @@ class CartPage extends StatelessWidget {
             padding: EdgeInsets.all(Dimension.scaleWidth(10)),
             child: Row(
               children: [
-                ClipRRect(
-                  borderRadius:
-                      BorderRadius.circular(Dimension.scaleHeight(20)),
-                  child: Image.network(
-                    AppConstants.BASE_URI +
-                        AppConstants.UPLOAD_URL +
-                        cartModel.img!,
-                    fit: BoxFit.cover,
-                    width: Dimension.scaleWidth(130),
-                    height: Dimension.scaleWidth(130),
-                    cacheWidth: (Dimension.scaleWidth(130).ceil()),
-                    cacheHeight: (Dimension.scaleWidth(130).ceil()),
+                GestureDetector(
+                  onTap: () {
+                    int id = cartModel.id!;
+                    int index = Get.find<RecommendedProductController>()
+                        .recommendedProductList
+                        .indexWhere((element) => id == element.id);
+                    if (index >= 0) {
+                      Get.toNamed(RouteHelper.recommendedFood, arguments: [
+                        Get.find<PopularProductController>()
+                            .popularProductList[index]
+                      ]);
+                    } else {
+                      int index = Get.find<PopularProductController>()
+                          .popularProductList
+                          .indexWhere((element) => id == element.id);
+                      Get.toNamed(RouteHelper.popularFood, arguments: [
+                        Get.find<RecommendedProductController>()
+                            .recommendedProductList[index]
+                      ]);
+                    }
+                  },
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(Dimension.scaleHeight(20)),
+                    child: Image.network(
+                      AppConstants.BASE_URI +
+                          AppConstants.UPLOAD_URL +
+                          cartModel.img!,
+                      fit: BoxFit.cover,
+                      width: Dimension.scaleWidth(130),
+                      height: Dimension.scaleWidth(130),
+                      cacheWidth: (Dimension.scaleWidth(130).ceil()),
+                      cacheHeight: (Dimension.scaleWidth(130).ceil()),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -168,5 +194,55 @@ class CartPage extends StatelessWidget {
                 )
               ],
             )));
+  }
+
+  Widget bottomNavigationBarBuilder() {
+    return GetBuilder<CartController>(
+        builder: (controller) => Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(Dimension.scaleHeight(10)),
+                    topRight: Radius.circular(Dimension.scaleHeight(10))),
+                color: Colors.grey[100],
+              ),
+              padding: EdgeInsets.symmetric(
+                  vertical: Dimension.scaleHeight(10),
+                  horizontal: Dimension.scaleWidth(10)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              BorderRadius.circular(Dimension.scaleHeight(16))),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: Dimension.scaleWidth(5),
+                          ),
+                          BigText(text: controller.totalCost().toString())
+                        ],
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          vertical: Dimension.scaleHeight(10),
+                          horizontal: Dimension.scaleWidth(10))),
+                  InkWell(
+                    onTap: () {
+                      controller.addtoHistory();
+                    },
+                    child: Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: Dimension.scaleHeight(20),
+                            horizontal: Dimension.scaleWidth(15)),
+                        decoration: BoxDecoration(
+                            color: AppColors.mainColor,
+                            borderRadius: BorderRadius.circular(
+                                Dimension.scaleHeight(20))),
+                        child: BigText(text: "Check Out")),
+                  )
+                ],
+              ),
+            ));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:app/controller/cart_controller.dart';
-import 'package:app/view/screens/cart_screen/cart_page.dart';
+import 'package:app/routes/route_helper.dart';
+import 'package:app/view/screens/cart/cart_page.dart';
 import 'package:app/view/widgets/small_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,8 @@ class AppBarWidgets extends StatelessWidget {
           ),
           InkWell(
             onTap: (){
-              Get.to(CartPage());
+              if(recommendedProductControl.totatItems != 0)
+              Get.toNamed(RouteHelper.cartPage);
             },
             child: Stack(
               alignment: Alignment.topRight,

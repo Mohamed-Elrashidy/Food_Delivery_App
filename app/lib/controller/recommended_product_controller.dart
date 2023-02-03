@@ -73,8 +73,8 @@ class RecommendedProductController extends GetxController {
       _cartItem = cart.getQuantity(product);
     }
     // update();
-    print("quantity is " + _cartItem.toString());
-    print("exist or not" + exist.toString());
+    //print("quantity is " + _cartItem.toString());
+  //  print("exist or not" + exist.toString());
   }
   int get totatItems{
     return _cart.totalItems;

@@ -74,11 +74,11 @@ class PopularFoodDetails extends StatelessWidget {
                                 ),
                               )),
                           SizedBox(width: Dimension.scaleWidth(8)),
-                          BigText(
+                          GetBuilder<CartController>(builder: (_)=>BigText(
                               text: (recommendProductControl.cartItem +
-                                      recommendProductControl.quantity)
+                                  recommendProductControl.quantity)
                                   .toString(),
-                              size: Dimension.scaleHeight(24)),
+                              size: Dimension.scaleHeight(24))),
                           SizedBox(
                             width: Dimension.scaleWidth(8),
                           ),
