@@ -3,6 +3,8 @@ import 'package:app/view/screens/cart/cart_history.dart';
 import 'package:app/view/screens/food_page/main_food_page.dart';
 import 'package:flutter/material.dart';
 
+import '../account/account_page.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -23,9 +25,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     List<Widget> pages = [
       const MainFoodpage(),
-     CartHistory(),
+      CartHistory(),
       Container(),
-      Container()
+      AccountPage()
     ];
     return Scaffold(
       body: pages[selectedIndex],

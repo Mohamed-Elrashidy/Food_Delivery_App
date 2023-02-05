@@ -1,3 +1,4 @@
+import 'package:app/base/no_data_page.dart';
 import 'package:app/controller/popular_product_controller.dart';
 import 'package:app/controller/recommended_product_controller.dart';
 import 'package:app/model/cart_model.dart';
@@ -27,8 +28,15 @@ class CartPage extends StatelessWidget {
           AppBarWidget(),
           Container(
               height: Dimension.scaleHeight(
-                  Dimension.screenHeight - Dimension.scaleHeight(210)),
-              child: listWidget())
+                  Dimension.screenHeight - Dimension.scaleHeight(200)),
+              child: GetBuilder<CartController>(
+                builder: (controller) {
+                  if (controller.listOfCartItems.length > 0)
+                    return listWidget();
+                  else
+                    return NoDataPage(text: "your cart is empty");
+                },
+              ))
         ],
       ),
     ));
@@ -36,7 +44,7 @@ class CartPage extends StatelessWidget {
 
   Widget AppBarWidget() {
     return Container(
-      height: Dimension.scaleWidth(70),
+      height: Dimension.scaleHeight(70),
       child: Container(
         padding: EdgeInsets.all(Dimension.scaleHeight(10)),
         child: Row(
@@ -73,21 +81,23 @@ class CartPage extends StatelessWidget {
   Widget listWidget() {
     return GetBuilder<CartController>(builder: (cartController) {
       //recommedndedProduct.getRecommendedProductList();
-      return ListView.builder(
-          //  physics: NeverScrollableScrollPhysics(),
-          // shrinkWrap: true,
-          itemCount: cartController.listOfCartItems.length,
-          itemBuilder: (_, index) {
-            return itemView(
-                cartController.listOfCartItems[index], cartController);
-          });
+      return Container(
+        child: ListView.builder(
+            //  physics: NeverScrollableScrollPhysics(),
+            // shrinkWrap: true,
+            itemCount: cartController.listOfCartItems.length,
+            itemBuilder: (_, index) {
+              return itemView(
+                  cartController.listOfCartItems[index], cartController);
+            }),
+      );
     });
   }
 
   Widget itemView(CartModel cartModel, CartController cartController) {
     return InkWell(
         child: Container(
-            height: Dimension.scaleWidth(150),
+            height: Dimension.scaleHeight(130),
             padding: EdgeInsets.all(Dimension.scaleWidth(10)),
             child: Row(
               children: [
@@ -139,7 +149,7 @@ class CartPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           BigText(text: cartModel.name!),
-                          SmallText(text: "spicy"),
+                          const SmallText(text: "spicy"),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -151,7 +161,7 @@ class CartPage extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(
-                                          Dimension.scaleHeight(24))),
+                                          Dimension.scaleWidth(24))),
                                   child: Row(
                                     children: [
                                       InkWell(
@@ -208,41 +218,45 @@ class CartPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                   vertical: Dimension.scaleHeight(10),
                   horizontal: Dimension.scaleWidth(10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              BorderRadius.circular(Dimension.scaleHeight(16))),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: Dimension.scaleWidth(5),
-                          ),
-                          BigText(text: controller.totalCost().toString())
-                        ],
-                      ),
-                      padding: EdgeInsets.symmetric(
-                          vertical: Dimension.scaleHeight(10),
-                          horizontal: Dimension.scaleWidth(10))),
-                  InkWell(
-                    onTap: () {
-                      controller.addtoHistory();
-                    },
-                    child: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: Dimension.scaleHeight(20),
-                            horizontal: Dimension.scaleWidth(15)),
-                        decoration: BoxDecoration(
-                            color: AppColors.mainColor,
-                            borderRadius: BorderRadius.circular(
-                                Dimension.scaleHeight(20))),
-                        child: BigText(text: "Check Out")),
-                  )
-                ],
-              ),
+              child: (controller.listOfCartItems.length > 0)
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(
+                                    Dimension.scaleHeight(16))),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: Dimension.scaleWidth(5),
+                                ),
+                                BigText(
+                                    text: '\$ ' +
+                                        controller.totalCost().toString())
+                              ],
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: Dimension.scaleHeight(10),
+                                horizontal: Dimension.scaleWidth(10))),
+                        InkWell(
+                          onTap: () {
+                            controller.addtoHistory();
+                          },
+                          child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: Dimension.scaleHeight(20),
+                                  horizontal: Dimension.scaleWidth(15)),
+                              decoration: BoxDecoration(
+                                  color: AppColors.mainColor,
+                                  borderRadius: BorderRadius.circular(
+                                      Dimension.scaleHeight(20))),
+                              child: BigText(text: "Check Out")),
+                        )
+                      ],
+                    )
+                  : Container(height: Dimension.scaleHeight(85)),
             ));
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:app/controller/cart_controller.dart';
+import 'package:app/routes/route_helper.dart';
 import 'package:app/utils/colors.dart';
 import 'package:app/utils/dimensionScale.dart';
 import 'package:app/view/widgets/bit_text.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../base/no_data_page.dart';
 import '../../../model/cart_model.dart';
 import '../../../utils/app_constants.dart';
 import '../../widgets/app_icon.dart';
@@ -20,7 +22,10 @@ class CartHistory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        children: [AppBarBuilder(), ListViewBuilder()],
+        children: [
+          AppBarBuilder(),
+          GetBuilder<CartController>(builder: (_) => ListViewBuilder())
+        ],
       ),
     );
   }
@@ -54,18 +59,31 @@ class CartHistory extends StatelessWidget {
     cartHistory.forEach((key, value) {
       keys.add(key);
     });
-    return Container(
-        height: Dimension.screenHeight - Dimension.scaleHeight(200),
-        margin: EdgeInsets.only(
-          top: Dimension.scaleHeight(20),
-          left: Dimension.scaleWidth(20),
-          right: Dimension.scaleWidth(20),
+    if (cartHistory.length > 0) {
+      return Container(
+          height: Dimension.screenHeight - Dimension.scaleHeight(200),
+          margin: EdgeInsets.only(
+            top: Dimension.scaleHeight(20),
+            left: Dimension.scaleWidth(20),
+            right: Dimension.scaleWidth(20),
+          ),
+          child: ListView.builder(
+              itemCount: cartHistory.length,
+              itemBuilder: (_, index) {
+                return itemView(cartHistory[keys[keys.length - 1 - index]]!);
+              }));
+    } else {
+      return Expanded(
+        child: Container(
+          child: const Center(
+            child: NoDataPage(
+              text: "you didn't buy anything so far !",
+              imgPath: "assets/image/empty_box.png",
+            ),
+          ),
         ),
-        child: ListView.builder(
-            itemCount: cartHistory.length,
-            itemBuilder: (_, index) {
-              return itemView(cartHistory[keys[index]]!);
-            }));
+      );
+    }
   }
 
   Widget itemView(List<CartModel> items) {
@@ -75,10 +93,10 @@ class CartHistory extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // IEF  immediatly involved function
-          ((){
-          var date= DateFormat("yyyy-MM-dd HH:mm:ss").parse(items[0].time!);
-           var outputFormat= DateFormat("MM/dd/yyyy hh:mm a");
-           var outputDate = outputFormat.format(date);
+          (() {
+            var date = DateFormat("yyyy-MM-dd HH:mm:ss").parse(items[0].time!);
+            var outputFormat = DateFormat("MM/dd/yyyy hh:mm a");
+            var outputDate = outputFormat.format(date);
             return BigText(text: outputDate);
           }()),
           Row(
@@ -109,21 +127,39 @@ class CartHistory extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    SmallText(text: "Total",color: Colors.black87,),
+                    SmallText(
+                      text: "Total",
+                      color: Colors.black87,
+                    ),
                     BigText(
                       text: items.length.toString() + " Items",
                       color: AppColors.titleColor,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(Dimension.scaleWidth(5)
-
+                    GestureDetector(
+                      onTap: () {
+                        Map<int, CartModel> newItems = {};
+                        for (int i = 0; i < items.length; i++) {
+                          //  print(items[i].id!);
+                          newItems.putIfAbsent(items[i].id!, () => items[i]);
+                        }
+                        Get.find<CartController>().setItems = newItems;
+                        Get.find<CartController>().addToCartList();
+                        Get.toNamed(RouteHelper.cartPage);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(Dimension.scaleWidth(5)),
+                          border:
+                              Border.all(color: AppColors.mainColor, width: 1),
                         ),
-                        border: Border.all(color: AppColors.mainColor,width: 1),
-
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                        child: SmallText(
+                          text: "one more",
+                          size: 12,
+                        ),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 6,vertical: 3),
-                      child: SmallText(text:"view more",size: 12,),
                     )
                   ],
                 ),

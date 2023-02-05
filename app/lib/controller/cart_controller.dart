@@ -150,4 +150,13 @@ Map<String,List<CartModel>> getHistoryOfOperations()
   print(curr);
   return curr;
 }
+set setItems(Map<int,CartModel> setItems){
+    _items={};
+    _items=setItems;
+}
+ void addToCartList()
+ {
+   cartRepo.addToCartList(listOfCartItems);
+   update();
+ }
 }
