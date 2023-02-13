@@ -1,6 +1,12 @@
+import 'package:app/base/snack_bar_message.dart';
+import 'package:app/controller/auth_controller.dart';
+import 'package:app/controller/cart_controller.dart';
+import 'package:app/controller/user_controller.dart';
+import 'package:app/routes/route_helper.dart';
 import 'package:app/utils/dimensionScale.dart';
 import 'package:app/view/widgets/bit_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../utils/colors.dart';
 import '../../widgets/app_icon.dart';
@@ -10,28 +16,74 @@ class AccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body:  SingleChildScrollView(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              AppBarBuilder(),
-              SizedBox(
-                height: Dimension.scaleHeight(20),
-              ),
-              dataViewBuilder()
-            ],
-          ),
-      ),
+    Get.find<UserController>().initUserData();
+    bool _userLoggedIn = Get.find<AuthController>().userLoggedIn();
+    if (_userLoggedIn) {
+      Get.find<UserController>().getUserInfo();
+    }
 
+    return Scaffold(
+      body: GetBuilder<UserController>(
+        builder: (userConroller) {
+          return _userLoggedIn
+              ? SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      AppBarBuilder(),
+                      SizedBox(
+                        height: Dimension.scaleHeight(20),
+                      ),
+                      dataViewBuilder()
+                    ],
+                  ),
+                )
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: double.maxFinite,
+                      height: Dimension.scaleHeight(160),
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(Dimension.scaleWidth(20)),
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage(
+                                  "assets/image/signintocontinue.png"))),
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          Get.offNamed(RouteHelper.singInPage);
+                        },
+                        child: Container(
+                          width: double.maxFinite,
+                          height: Dimension.scaleHeight(100),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  Dimension.scaleWidth(20)),
+                              color: AppColors.mainColor),
+                          child: Center(
+                            child: BigText(
+                              text: "Sign in ",
+                              color: Colors.white,
+                              size: Dimension.scaleWidth(30),
+                            ),
+                          ),
+                        ))
+                  ],
+                ));
+        },
+      ),
     );
   }
 
   Widget AppBarBuilder() {
     return Container(
-        padding: EdgeInsets.only(top: Dimension.scaleHeight(30)),
-        height: Dimension.scaleHeight(100),
+        padding: EdgeInsets.only(top: Dimension.scaleHeight(20)),
+        height: Dimension.scaleHeight(80),
         width: double.infinity,
         decoration: BoxDecoration(color: AppColors.mainColor),
         child: Center(
@@ -40,7 +92,7 @@ class AccountPage extends StatelessWidget {
 
   Widget photoBuilder() {
     return CircleAvatar(
-      radius: Dimension.scaleWidth(100),
+      radius: Dimension.scaleWidth(80),
       backgroundColor: AppColors.mainColor,
       child: Icon(
         Icons.person,
@@ -51,6 +103,7 @@ class AccountPage extends StatelessWidget {
   }
 
   Widget dataViewBuilder() {
+    UserController _userController = Get.find<UserController>();
     return Column(
       children: [
         photoBuilder(),
@@ -62,55 +115,67 @@ class AccountPage extends StatelessWidget {
               icon: Icons.person,
               color: AppColors.mainColor,
             ),
-            "text"), SizedBox(
+            _userController.userMOdel.name),
+        SizedBox(
           height: Dimension.scaleHeight(20),
         ),
         dataItemBuilder(
             AppIcon(
-              icon: Icons.person,
-              color: AppColors.mainColor,
+              icon: Icons.phone,
+              color: Colors.yellow,
             ),
-            "text") ,SizedBox(
+            _userController.userMOdel.phone),
+        SizedBox(
           height: Dimension.scaleHeight(20),
         ),
         dataItemBuilder(
             AppIcon(
-              icon: Icons.person,
-              color: AppColors.mainColor,
+              icon: Icons.email,
+              color: Colors.yellow,
             ),
-            "text") ,SizedBox(
+            _userController.userMOdel.email),
+        SizedBox(
+          height: Dimension.scaleHeight(20),
+        ),
+        dataItemBuilder(
+            const AppIcon(
+              icon: Icons.location_on_rounded,
+              color: Colors.yellow,
+            ),
+            "Fill in your address"),
+        SizedBox(
           height: Dimension.scaleHeight(20),
         ),
         dataItemBuilder(
             AppIcon(
-              icon: Icons.person,
-              color: AppColors.mainColor,
+              icon: Icons.message,
+              color: Colors.redAccent,
             ),
-            "text"), SizedBox(
+            "Messages"),
+        SizedBox(
           height: Dimension.scaleHeight(20),
         ),
-        dataItemBuilder(
-            AppIcon(
-              icon: Icons.person,
-              color: AppColors.mainColor,
-            ),
-            "text"), SizedBox(
+        GestureDetector(
+          onTap: () {
+            if (Get.find<AuthController>().userLoggedIn()) {
+              print('loggedout');
+              Get.find<AuthController>().clearSharedData();
+              Get.find<CartController>().clearCartHistory();
+              Get.offNamed(RouteHelper.singInPage);
+            } else {
+              showSnackBar("you are not login");
+            }
+          },
+          child: dataItemBuilder(
+              AppIcon(
+                icon: Icons.logout,
+                color: Colors.redAccent,
+              ),
+              "LogOut"),
+        ),
+        SizedBox(
           height: Dimension.scaleHeight(20),
         ),
-        dataItemBuilder(
-            AppIcon(
-              icon: Icons.person,
-              color: AppColors.mainColor,
-            ),
-            "text"), SizedBox(
-          height: Dimension.scaleHeight(20),
-        ),
-        dataItemBuilder(
-            AppIcon(
-              icon: Icons.person,
-              color: AppColors.mainColor,
-            ),
-            "text")
       ],
     );
   }
@@ -128,7 +193,13 @@ class AccountPage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: appIcon,
           ),
-          BigText(text: text)
+          SizedBox(
+            width: 10,
+          ),
+          BigText(
+            text: text,
+            size: 18,
+          )
         ],
       ),
     );

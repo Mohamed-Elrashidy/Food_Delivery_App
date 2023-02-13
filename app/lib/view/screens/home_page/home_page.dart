@@ -4,6 +4,8 @@ import 'package:app/view/screens/food_page/main_food_page.dart';
 import 'package:flutter/material.dart';
 
 import '../account/account_page.dart';
+import '../auth/signin_page.dart';
+import '../auth/signup_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> pages = [
-      const MainFoodpage(),
+       MainFoodpage(),
       CartHistory(),
       Container(),
       AccountPage()

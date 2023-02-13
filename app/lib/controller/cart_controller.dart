@@ -4,12 +4,11 @@ import 'package:get/get.dart';
 import '../data/repository/cart_repo.dart';
 
 class CartController extends GetxController {
-
   final CartRepo cartRepo;
   CartController({required this.cartRepo});
   Map<int, CartModel> _items = {};
   // only for storage and shared prerefrence
-  List<CartModel> storageItems=[];
+  List<CartModel> storageItems = [];
 
   void addItem(ProductModel productModel, int quantity) {
     print('here');
@@ -69,94 +68,103 @@ class CartController extends GetxController {
     return quantity;
   }
 
-  int get totalItems{
-    int total=0;
+  int get totalItems {
+    int total = 0;
     _items.forEach((key, value) {
-      total+=value.quantity!;
+      total += value.quantity!;
     });
     return total;
   }
 
-  List<CartModel> get listOfCartItems{
-    return _items.entries.map((e){
+  List<CartModel> get listOfCartItems {
+    return _items.entries.map((e) {
       return e.value;
     }).toList();
   }
 
-  void addToCart(int id)
-  {
-    _items.update(id, (value) => CartModel(
-        id: _items[id]!.id,
-        name: _items[id]!.name,
-        price: _items[id]!.price,
-        img: _items[id]!.img,
-        quantity: _items[id]!.quantity!+1,
-        isExit: true,
-        time: DateTime.now().toString()));
+  void addToCart(int id) {
+    _items.update(
+        id,
+        (value) => CartModel(
+            id: _items[id]!.id,
+            name: _items[id]!.name,
+            price: _items[id]!.price,
+            img: _items[id]!.img,
+            quantity: _items[id]!.quantity! + 1,
+            isExit: true,
+            time: DateTime.now().toString()));
     cartRepo.addToCartList(listOfCartItems);
 
     update();
   }
-  void removeFromCart(int id)
-  {
-    _items.update(id, (value) => CartModel(
-        id: _items[id]!.id,
-        name: _items[id]!.name,
-        price: _items[id]!.price,
-        img: _items[id]!.img,
-        quantity: _items[id]!.quantity!-1,
-        isExit: true,
-        time: DateTime.now().toString()));
-    if(_items[id]!.quantity==0)
-      _items.remove(id);
+
+  void removeFromCart(int id) {
+    _items.update(
+        id,
+        (value) => CartModel(
+            id: _items[id]!.id,
+            name: _items[id]!.name,
+            price: _items[id]!.price,
+            img: _items[id]!.img,
+            quantity: _items[id]!.quantity! - 1,
+            isExit: true,
+            time: DateTime.now().toString()));
+    if (_items[id]!.quantity == 0) _items.remove(id);
     cartRepo.addToCartList(listOfCartItems);
     update();
   }
-  int totalCost()
-  {
-    int total=0;
+
+  int totalCost() {
+    int total = 0;
     _items.forEach((key, value) {
-      total+=value.quantity!*value.price!;
+      total += value.quantity! * value.price!;
     });
     return total as int;
   }
-  void clearItems()
-  {//print('reached');
-    _items={};
+
+  void clearItems() {
+    //print('reached');
+    _items = {};
     update();
   }
-  List <CartModel> getCartData (){
-    setCart=cartRepo.getCartList();
 
-  return storageItems;
-}
+  List<CartModel> getCartData() {
+    setCart = cartRepo.getCartList();
 
-set setCart(List<CartModel> items)
-{
-   storageItems=items;
-   print("items size in begining is " +items.length.toString());
-   for(int i=0;i<storageItems.length;i++)
-     {
-       _items.putIfAbsent(storageItems[i].id!, () => storageItems[i]);
-     }
-}
-void addtoHistory(){
+    return storageItems;
+  }
+
+  set setCart(List<CartModel> items) {
+    storageItems = items;
+    print("items size in begining is " + items.length.toString());
+    for (int i = 0; i < storageItems.length; i++) {
+      _items.putIfAbsent(storageItems[i].id!, () => storageItems[i]);
+    }
+  }
+
+  void addtoHistory() {
     cartRepo.addToCartHistory();
     clearItems();
-}
-Map<String,List<CartModel>> getHistoryOfOperations()
-{
-  var curr=cartRepo.getCheckOutHistory();
-  print(curr);
-  return curr;
-}
-set setItems(Map<int,CartModel> setItems){
-    _items={};
-    _items=setItems;
-}
- void addToCartList()
- {
-   cartRepo.addToCartList(listOfCartItems);
-   update();
- }
+  }
+
+  Map<String, List<CartModel>> getHistoryOfOperations() {
+    var curr = cartRepo.getCheckOutHistory();
+    print(curr);
+    return curr;
+  }
+
+  set setItems(Map<int, CartModel> setItems) {
+    _items = {};
+    _items = setItems;
+  }
+
+  void addToCartList() {
+    cartRepo.addToCartList(listOfCartItems);
+    update();
+  }
+
+  void clearCartHistory() {
+    cartRepo.clearCartHistory();
+    update();
+  }
 }

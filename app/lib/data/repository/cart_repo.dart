@@ -83,24 +83,26 @@ class CartRepo {
     return cartListHistory;
   }
 
-  Map<String,List<CartModel>> getCheckOutHistory(){
-    Map<String,List<CartModel>> history={};
-   List<CartModel> cartHistory=getCartHistoryList();
-    for(int i=0;i<cartHistory.length;i++)
-  {
-    if(history.containsKey(cartHistory[i].time))
-  {
-    history[cartHistory[i].time]!.add(cartHistory[i]);
-  }
-    else
-  {
-    List<CartModel>curr=[];
-    curr.add(cartHistory[i]);
+  Map<String, List<CartModel>> getCheckOutHistory() {
+    Map<String, List<CartModel>> history = {};
+    List<CartModel> cartHistory = getCartHistoryList();
+    for (int i = 0; i < cartHistory.length; i++) {
+      if (history.containsKey(cartHistory[i].time)) {
+        history[cartHistory[i].time]!.add(cartHistory[i]);
+      } else {
+        List<CartModel> curr = [];
+        curr.add(cartHistory[i]);
 
-    history.putIfAbsent(cartHistory[i].time!, () => curr);
-  }
-  }
+        history.putIfAbsent(cartHistory[i].time!, () => curr);
+      }
+    }
 
     return history;
-}
+  }
+
+  void clearCartHistory() {
+    removeCart();
+    cartHistory=[];
+    sharedPreferences.remove(AppConstants.CART_HISTORY_LIST);
+  }
 }

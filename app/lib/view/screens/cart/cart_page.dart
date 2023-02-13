@@ -1,4 +1,5 @@
 import 'package:app/base/no_data_page.dart';
+import 'package:app/controller/auth_controller.dart';
 import 'package:app/controller/popular_product_controller.dart';
 import 'package:app/controller/recommended_product_controller.dart';
 import 'package:app/model/cart_model.dart';
@@ -28,7 +29,7 @@ class CartPage extends StatelessWidget {
           AppBarWidget(),
           Container(
               height: Dimension.scaleHeight(
-                  Dimension.screenHeight - Dimension.scaleHeight(200)),
+                  Dimension.screenHeight - Dimension.scaleHeight(315)),
               child: GetBuilder<CartController>(
                 builder: (controller) {
                   if (controller.listOfCartItems.length > 0)
@@ -242,7 +243,11 @@ class CartPage extends StatelessWidget {
                                 horizontal: Dimension.scaleWidth(10))),
                         InkWell(
                           onTap: () {
-                            controller.addtoHistory();
+                            if (Get.find<AuthController>().userLoggedIn()) {
+                              controller.addtoHistory();
+                            } else {
+                              Get.toNamed(RouteHelper.singInPage);
+                            }
                           },
                           child: Container(
                               padding: EdgeInsets.symmetric(
