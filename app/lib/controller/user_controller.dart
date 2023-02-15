@@ -32,14 +32,16 @@ class UserController extends GetxController implements GetxService {
     update();
     return responseModel;
   }
+  saveUserData(String data)
+  {
+    userRepo.saveUserData(data);
+  }
 
   initUserData() {
     String data = userRepo.initUserData();
     if (data != '') {
-
-
       _userModel = UserModel.fromJson(jsonDecode(data));
     }
-    update();
+    //update();
   }
 }

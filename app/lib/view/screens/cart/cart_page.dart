@@ -1,5 +1,6 @@
 import 'package:app/base/no_data_page.dart';
 import 'package:app/controller/auth_controller.dart';
+import 'package:app/controller/location_controller.dart';
 import 'package:app/controller/popular_product_controller.dart';
 import 'package:app/controller/recommended_product_controller.dart';
 import 'package:app/model/cart_model.dart';
@@ -244,6 +245,9 @@ class CartPage extends StatelessWidget {
                         InkWell(
                           onTap: () {
                             if (Get.find<AuthController>().userLoggedIn()) {
+                             if(Get.find<LocationController>().addressList.isEmpty)
+                              Get.toNamed(RouteHelper.addressRoute);
+                             else
                               controller.addtoHistory();
                             } else {
                               Get.toNamed(RouteHelper.singInPage);

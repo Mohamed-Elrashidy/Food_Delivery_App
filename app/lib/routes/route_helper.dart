@@ -9,6 +9,7 @@ import 'package:app/view/screens/splash/splash_screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
+import '../view/screens/add_address_page.dart';
 import '../view/screens/auth/signup_page.dart';
 
 class RouteHelper {
@@ -19,6 +20,7 @@ class RouteHelper {
   static const String splashScreen ="/splash-screen";
   static const String singInPage="/signin-page";
   static const String singUpPage="/signup-page";
+  static const String addressRoute="/address-page";
   static List<GetPage> routes = [
 
     GetPage(name: "/", page: () => const HomePage()),
@@ -48,5 +50,10 @@ class RouteHelper {
         name: singUpPage,
         page: () =>  SignUpPage(),
         transition: Transition.fade),
+     GetPage(
+        name: addressRoute,
+        page: () =>  AddAddressPage(),
+        transition: Transition.fade),
+
   ];
 }

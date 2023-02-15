@@ -18,7 +18,7 @@ class TextFieldBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(Dimension.scaleWidth(20)),
+      margin: EdgeInsets.symmetric(horizontal:Dimension.scaleWidth(20),vertical: Dimension.scaleHeight(10)),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimension.scaleWidth(15)),
           color: Colors.white,

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app/base/custome_loader.dart';
 import 'package:app/routes/route_helper.dart';
 import 'package:app/utils/dimensionScale.dart';
@@ -11,6 +13,7 @@ import 'package:get/get.dart';
 
 import '../../../base/snack_bar_message.dart';
 import '../../../controller/auth_controller.dart';
+import '../../../controller/user_controller.dart';
 import '../../../utils/colors.dart';
 import '../../widgets/small_text.dart';
 
@@ -21,6 +24,7 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   //
     return Scaffold(
       backgroundColor: Colors.white,
       body:GetBuilder<AuthController>(builder:(_authController){
@@ -160,11 +164,13 @@ class SignInPage extends StatelessWidget {
       showSnackBar("All is perfect ", title: "Perfect");
 
       authController.login(email,password).then((status) {
-        if (status.isSuccess) {
+        if (status!="") {
           print("success");
+          authController.getUserData(email);
+          Get.find<UserController>().initUserData();
           Get.toNamed(RouteHelper.intial);
         } else {
-          showSnackBar(status.message);
+          showSnackBar("faild");
         }
       });
     }

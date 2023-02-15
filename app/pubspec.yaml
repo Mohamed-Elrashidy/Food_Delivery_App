@@ -30,6 +30,12 @@ dependencies:
   persistent_bottom_nav_bar: ^5.0.2
   shared_preferences: ^2.0.17
   intl: ^0.17.0
+  google_maps_flutter: ^2.2.3
+  geocoding: ^2.0.5
+  geolocator: ^9.0.2
+  firebase_core: ^2.5.0
+  cloud_firestore: ^4.4.0
+  firebase_auth: ^4.2.6
 
 dev_dependencies:
   flutter_test:

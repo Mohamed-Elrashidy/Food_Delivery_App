@@ -3,15 +3,20 @@ import 'package:app/controller/popular_product_controller.dart';
 import 'package:app/controller/recommended_product_controller.dart';
 import 'package:app/data/repository/cart_repo.dart';
 import 'package:app/routes/route_helper.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'controller/user_controller.dart';
 import 'helper/dependencies.dart' as dep;
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   await dep.init();
+
   runApp(const MyApp());
 }
 
@@ -26,6 +31,8 @@ class MyApp extends StatelessWidget {
     Get.find<PopularProductController>().getPopularProductList();
     Get.find<RecommendedProductController>().getRecommendedProductList();
     Get.find<CartController>();
+    Get.find<UserController>().initUserData();
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',

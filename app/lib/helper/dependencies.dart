@@ -1,9 +1,12 @@
 import 'package:app/controller/auth_controller.dart';
 import 'package:app/controller/cart_controller.dart';
+import 'package:app/controller/location_controller.dart';
 import 'package:app/controller/popular_product_controller.dart';
 import 'package:app/controller/user_controller.dart';
 import 'package:app/data/api/api_client.dart';
+import 'package:app/data/api/firebase_client.dart';
 import 'package:app/data/repository/auth_repo.dart';
+import 'package:app/data/repository/location_repo.dart';
 import 'package:app/data/repository/popular_product_repo.dart';
 import 'package:app/data/repository/user_repo.dart';
 import 'package:get/get.dart';
@@ -18,21 +21,25 @@ Future<void>init()async{
   Get.lazyPut(()=>sharedPreferences);
 
   Get.lazyPut(()=>ApiClient(appBaseUrl: AppConstants.BASE_URI));
+  Get.lazyPut(()=>FirebaseClient());
+
 
   Get.lazyPut(() => PopularProductRepo(apiClient: Get.find()));
   Get.lazyPut(() => RecommendedProductRepo(apiClient: Get.find()));
   Get.lazyPut(() => UserRepo(apiClient: Get.find(),sharedPreferences: sharedPreferences));
+  Get.lazyPut(() => LocationRepo(apiClient: Get.find(),sharedPreferences: sharedPreferences));
+
 
 
   Get.lazyPut(()=>CartRepo(sharedPreferences:Get.find()));
-  Get.lazyPut(()=>AuthRepo(apiClient: Get.find(), sharedPreferences: sharedPreferences));
+  Get.lazyPut(()=>AuthRepo(apiClient: Get.find(),firebaseClient: Get.find(), sharedPreferences: sharedPreferences));
 
   Get.lazyPut(() => PopularProductController(popularProductRepo: Get.find()));
   Get.lazyPut(() => RecommendedProductController(recommendedProductrepo: Get.find()));
   Get.lazyPut(() => CartController(cartRepo: Get.find()));
   Get.lazyPut(() => AuthController(authRepo: Get.find()));
   Get.lazyPut(() => UserController(userRepo: Get.find()));
-
+  Get.lazyPut(() => LocationController(locationRepo:Get.find()));
 
 
 }

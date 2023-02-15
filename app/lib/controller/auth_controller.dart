@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:app/data/repository/auth_repo.dart';
 import 'package:app/model/response_model.dart';
 import 'package:app/model/sign_up_body.dart';
+import 'package:app/utils/app_constants.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController implements GetxService {
@@ -10,38 +13,42 @@ class AuthController extends GetxController implements GetxService {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  Future<ResponseModel> registration(SignUpBody signUpBody) async {
+  Future<String> registration(SignUpBody signUpBody) async {
     _isLoading = true;
     update();
-    Response response = await authRepo.registration(signUpBody);
-    late ResponseModel responseModel;
-    if (response.statusCode == 200) {
-      authRepo.saveUserToken(response.body["token"]);
-      responseModel = ResponseModel(true, response.body["token"]);
+    String response = await authRepo.registration(signUpBody);
+    //late ResponseModel responseModel;
+    if (response != "") {
+      authRepo.saveUserToken(response);}
+    //  responseModel = ResponseModel(true, response);
+    // } else {
+    //   responseModel = ResponseModel(false, response.statusText!);
+    // }
+    _isLoading = false;
+    update();
+    return response;
+   // return responseModel;
+  }
+
+  Future<String> login(String email, String password) async {
+    _isLoading = true;
+    update();
+    String response = await authRepo.login(email, password);
+
+    if (response != "") {
+      authRepo.saveUserToken(response);
+     // responseModel = ResponseModel(true, response.body["token"]);
     } else {
-      responseModel = ResponseModel(false, response.statusText!);
+     // responseModel = ResponseModel(false, response.statusText!);
     }
     _isLoading = false;
     update();
-    return responseModel;
+    return response;
   }
-
-  Future<ResponseModel> login(String email, String password) async {
-    _isLoading = true;
-    update();
-    Response response = await authRepo.login(email, password);
-    late ResponseModel responseModel;
-    if (response.statusCode == 200) {
-      authRepo.saveUserToken(response.body["token"]);
-      responseModel = ResponseModel(true, response.body["token"]);
-    } else {
-      responseModel = ResponseModel(false, response.statusText!);
-    }
-    _isLoading = false;
-    update();
-    return responseModel;
+  getUserData(String email)
+  {
+    authRepo.getUserData(AppConstants.FIREBASE_USER_DATA, email);
   }
-
   void saveUserNumberAndPassword(String number, String password) async {
     authRepo.saveUserNumberAndPassword(number, password);
   }

@@ -1,21 +1,29 @@
+import 'package:app/base/snack_bar_message.dart';
 import 'package:app/data/api/api_client.dart';
+import 'package:app/data/api/firebase_client.dart';
 import 'package:app/model/sign_up_body.dart';
 import 'package:app/utils/app_constants.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepo {
+  final FirebaseClient firebaseClient;
   final ApiClient apiClient;
   final SharedPreferences sharedPreferences;
-  AuthRepo({required this.apiClient, required this.sharedPreferences});
-  Future<Response> registration(SignUpBody signUpBody) async {
-    return await apiClient.postData(
-        AppConstants.Registration_URI, signUpBody.toJson());
+  AuthRepo(
+      {required this.apiClient,
+      required this.firebaseClient,
+      required this.sharedPreferences});
+  Future<String> registration(SignUpBody signUpBody) async {
+   return await firebaseClient.signUp(signUpBody.email, signUpBody.password, signUpBody.toJson());
+    // return await apiClient.postData(
+    //     AppConstants.Registration_URI, signUpBody.toJson());
   }
 
-  Future<Response> login(String email, String password) async {
-    return await apiClient.postData(
-        AppConstants.LOGIN_URI, {"email": email, "password": password});
+  Future<String> login(String email, String password) async {
+     String response =await firebaseClient.signIn(email, password);
+
+   return response;
   }
 
   Future<String> getUserToken() async {
@@ -23,8 +31,8 @@ class AuthRepo {
   }
 
   Future<bool> saveUserToken(String token) async {
-    apiClient.token = token;
-    apiClient.updateHeader(token);
+    //firebaseClient.token = token;
+   // apiClient.updateHeader(token);
     return await sharedPreferences.setString(AppConstants.Token, token);
   }
 
@@ -43,8 +51,21 @@ class AuthRepo {
     sharedPreferences.remove(AppConstants.Token);
     sharedPreferences.remove(AppConstants.PASSWORD);
     sharedPreferences.remove(AppConstants.PHONE);
-    apiClient.token = "";
-    apiClient.updateHeader("");
     return true;
+  }
+  Future<String> getUserData(String uri,String email)async
+  {
+    String data="";
+  try {
+     data = await firebaseClient.getFromCloud(uri, "email", email);
+
+    sharedPreferences.setString(AppConstants.USER_DATA, data);
+    print(data);
+  }
+  catch(e)
+    {
+     showSnackBar(e.toString());
+    }
+  return data;
   }
 }
