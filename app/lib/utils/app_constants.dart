@@ -25,4 +25,5 @@ class AppConstants {
   // fire base paths
 
   static const String FIREBASE_USER_DATA="/Users";
+  static const String USER_ADDRESS_URI="/Address/Q3edvqgsmPKnhDuM7PN6";
 }

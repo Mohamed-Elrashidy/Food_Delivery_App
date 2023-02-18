@@ -24,17 +24,24 @@ class LocationController extends GetxController implements GetxService {
 
   Placemark get placemark=>_placemark;
   Placemark get pickPlacemark=>_pickPlacemark;
+
+
   List<AddressModel> _addressList = [];
   late List<AddressModel> _allAddressList;
+
+
   List<String> _addressTypeList = ["home", "office", "others"];
   List<String> get addressTypeList=>_addressTypeList;
 
   int _addressTypeIndex = 0;
  int get addressTypeIndex=>_addressTypeIndex;
   List<AddressModel> get addressList => _addressList;
+
   late Map<String, dynamic> _getAddress;
   Map get getAddress => _getAddress;
+
   late GoogleMapController _mapController;
+  GoogleMapController get mapController =>_mapController;
   bool _updateAddressData = true;
   bool _changeAddress = true;
 
@@ -115,4 +122,35 @@ class LocationController extends GetxController implements GetxService {
     _addressTypeIndex=index;
     update();
   }
+  addAddress(AddressModel addressModel)
+  {
+    locationRepo.addAddress(addressModel);
+  }
+
+  getAddressList(String email)async
+  {
+    _addressList=[];
+    _allAddressList=[];
+     await locationRepo.getAddressList(email).then((value) {
+       value.forEach((element) {_allAddressList.add(element);});
+     });
+    _allAddressList.forEach((element) { _addressList.add(element);});
+
+    print("address list is "+ _addressList.toString());
+    print("address list is "+ _addressList.length.toString());
+    print("address list is "+ addressList.length.toString());
+
+    if(_addressList.length>0)
+      {
+       _getAddress= _addressList[0].toJson();
+       //update();
+      }
+
+ //update();
+
+
+
+  }
+
+
 }

@@ -42,6 +42,6 @@ class UserController extends GetxController implements GetxService {
     if (data != '') {
       _userModel = UserModel.fromJson(jsonDecode(data));
     }
-    //update();
+    update();
   }
 }

@@ -48,9 +48,11 @@ class AuthRepo {
   }
 
   bool clearSharedData() {
+
     sharedPreferences.remove(AppConstants.Token);
     sharedPreferences.remove(AppConstants.PASSWORD);
     sharedPreferences.remove(AppConstants.PHONE);
+    sharedPreferences.clear();
     return true;
   }
   Future<String> getUserData(String uri,String email)async

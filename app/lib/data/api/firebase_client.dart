@@ -81,4 +81,24 @@ try {
 
 return val;
   }
+
+  Future<List> getListFromCloud(String uri) async
+  {
+    List<dynamic> recivedData=[];
+    print(FirebaseAuth.instance.currentUser);
+
+
+      await FirebaseFirestore.instance
+          .collection(uri)
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+
+            recivedData.add(doc.data());
+
+        });
+      });
+
+    return recivedData;
+  }
 }

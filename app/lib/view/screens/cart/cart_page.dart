@@ -30,7 +30,7 @@ class CartPage extends StatelessWidget {
           AppBarWidget(),
           Container(
               height: Dimension.scaleHeight(
-                  Dimension.screenHeight - Dimension.scaleHeight(315)),
+                  Dimension.screenHeight - Dimension.scaleHeight(350)),
               child: GetBuilder<CartController>(
                 builder: (controller) {
                   if (controller.listOfCartItems.length > 0)
@@ -248,7 +248,9 @@ class CartPage extends StatelessWidget {
                              if(Get.find<LocationController>().addressList.isEmpty)
                               Get.toNamed(RouteHelper.addressRoute);
                              else
-                              controller.addtoHistory();
+                              {controller.addtoHistory();
+                              Get.offNamed(RouteHelper.intial);
+                              }
                             } else {
                               Get.toNamed(RouteHelper.singInPage);
                             }

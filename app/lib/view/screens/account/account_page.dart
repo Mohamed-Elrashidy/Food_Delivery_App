@@ -1,6 +1,7 @@
 import 'package:app/base/snack_bar_message.dart';
 import 'package:app/controller/auth_controller.dart';
 import 'package:app/controller/cart_controller.dart';
+import 'package:app/controller/location_controller.dart';
 import 'package:app/controller/user_controller.dart';
 import 'package:app/routes/route_helper.dart';
 import 'package:app/utils/dimensionScale.dart';
@@ -137,12 +138,57 @@ class AccountPage extends StatelessWidget {
         SizedBox(
           height: Dimension.scaleHeight(20),
         ),
-        dataItemBuilder(
-            const AppIcon(
-              icon: Icons.location_on_rounded,
-              color: Colors.yellow,
-            ),
-            "Fill in your address"),
+       GetBuilder<LocationController>(builder: (locationConroller){
+         if(Get.find<AuthController>().userLoggedIn()) {
+           locationConroller.getAddressList(Get.find<UserController>().userMOdel.email);
+
+         }
+         print(locationConroller.addressList.length);
+         if(Get.find<AuthController>().userLoggedIn()&&locationConroller.addressList.length>0)
+           {
+             return InkWell(
+               onTap: (){
+                 Get.toNamed(RouteHelper.addressRoute);
+               },
+               child: dataItemBuilder(
+                   AppIcon(
+                     icon: Icons.location_on_rounded,
+                     color: Colors.yellow,
+                   ),
+                   "Your address"),
+             );
+           }
+         else if(Get.find<AuthController>().userLoggedIn())
+           {
+             return InkWell(
+               onTap: (){
+                 Get.toNamed(RouteHelper.addressRoute);
+
+               },
+               child: dataItemBuilder(
+                   AppIcon(
+                     icon: Icons.location_on_rounded,
+                     color: Colors.yellow,
+                   ),
+                   "Fill in your address"),
+             );
+           }
+         else
+           {
+             return InkWell(
+               onTap: (){
+                 Get.toNamed(RouteHelper.singInPage);
+               },
+               child: dataItemBuilder(
+                   AppIcon(
+                     icon: Icons.location_on_rounded,
+                     color: Colors.yellow,
+                   ),
+                   "Fill in your address"),
+             );
+           }
+
+       },),
         SizedBox(
           height: Dimension.scaleHeight(20),
         ),
