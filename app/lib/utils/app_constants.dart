@@ -26,4 +26,21 @@ class AppConstants {
 
   static const String FIREBASE_USER_DATA="/Users";
   static const String USER_ADDRESS_URI="/Address/Q3edvqgsmPKnhDuM7PN6";
+
+  // payment uri
+
+  static const String PAYMOB_BASE_URI="https://accept.paymob.com/api";
+  static const String PAYMOB_AUTH="/auth/tokens";
+  static const String PAYMOB_ORDER_URI="/ecommerce/orders";
+  static const String PAYMOB_GET_PAYMENT_ID_URI="/acceptance/payment_keys";
+// payment tokens
+  static String PAYMENT_FIRST_TOKEN="";
+  static String PAYMENT_LAST_TOKEN="";
+  static String PAYMENT_ORDER_ID="";
+  static String PAYMENT_ID="";
+  static String REF_CODE="";
+  static const String INTEGREATION_ID_CARD="3460672";
+
+
+  static const String PAYMOB_API_KEY="ZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKSVV6VXhNaUo5LmV5SndjbTltYVd4bFgzQnJJam8zTURVek1qa3NJbU5zWVhOeklqb2lUV1Z5WTJoaGJuUWlMQ0p1WVcxbElqb2lhVzVwZEdsaGJDSjkuMEpMbld6bmZ5dWI5akhYOHQtejd4Y09zbndaa3A4OGVQdFRNTGM2UHY3cGQxcVNZZWEwbC12QWtPQ1liMG5Gbm9ETlVMNWJkWG5IbjlaaTdBWThhQkE=";
 }
