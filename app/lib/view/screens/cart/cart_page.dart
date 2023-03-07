@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/base/no_data_page.dart';
 import 'package:app/controller/auth_controller.dart';
 import 'package:app/controller/location_controller.dart';
@@ -5,17 +7,22 @@ import 'package:app/controller/popular_product_controller.dart';
 import 'package:app/controller/recommended_product_controller.dart';
 import 'package:app/model/cart_model.dart';
 import 'package:app/utils/colors.dart';
-import 'package:app/view/screens/food_page/main_food_page.dart';
 import 'package:app/view/widgets/small_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/cart_controller.dart';
+import '../../../controller/payment_controller.dart';
+import '../../../controller/user_controller.dart';
+import '../../../data/api/payment_client.dart';
+import '../../../data/repository/payment_repo.dart';
+import '../../../model/user_model.dart';
 import '../../../routes/route_helper.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/dimensionScale.dart';
 import '../../widgets/app_icon.dart';
 import '../../widgets/bit_text.dart';
+import '../payment/payment_page.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -243,13 +250,31 @@ class CartPage extends StatelessWidget {
                                 vertical: Dimension.scaleHeight(10),
                                 horizontal: Dimension.scaleWidth(10))),
                         InkWell(
-                          onTap: () {
+                          onTap: () async {
                             if (Get.find<AuthController>().userLoggedIn()) {
                              if(Get.find<LocationController>().addressList.isEmpty)
                               Get.toNamed(RouteHelper.addressRoute);
                              else
-                              {controller.addtoHistory();
-                              Get.offNamed(RouteHelper.intial);
+                              {
+                                UserModel user = Get.find<UserController>().userMOdel;
+
+                                Get.lazyPut(()=>PaymentClient());
+                                Get.lazyPut(() => PaymentRepo(paymentClient: Get.find()));
+                                Get.lazyPut(() => PaymentController(paymentRepo:Get.find()));
+
+                                await Get.find<PaymentController>().postOrder(AppConstants.PAYMOB_GET_PAYMENT_ID_URI,
+                                    firstName: user.name.split(' ')[0],
+                                    secondName: "",
+                                    email: user.email,
+                                    phone: user.phone,
+                                    price: Get.find<CartController>().totalCost().toString());
+                                await Timer(Duration(seconds: 5), () {
+                                  Get.to(()=>PaymobVisaScreen());
+                                controller.addtoHistory();});
+
+
+
+                             // Get.offNamed(RouteHelper.intial);
                               }
                             } else {
                               Get.toNamed(RouteHelper.singInPage);

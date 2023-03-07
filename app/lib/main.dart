@@ -2,6 +2,7 @@ import 'package:app/controller/cart_controller.dart';
 import 'package:app/controller/popular_product_controller.dart';
 import 'package:app/controller/recommended_product_controller.dart';
 import 'package:app/data/repository/cart_repo.dart';
+import 'package:app/data/repository/payment_repo.dart';
 import 'package:app/routes/route_helper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
