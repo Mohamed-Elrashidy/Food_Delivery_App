@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../account/account_page.dart';
 import '../auth/signin_page.dart';
 import '../auth/signup_page.dart';
+import '../order_pages/order_main_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,8 +28,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     List<Widget> pages = [
        MainFoodpage(),
+
+      OrderMainPage(),
       CartHistory(),
-      Container(),
       AccountPage()
     ];
     return Scaffold(

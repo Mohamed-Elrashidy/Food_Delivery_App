@@ -26,11 +26,11 @@ class AppConstants {
 
   static const String FIREBASE_USER_DATA = "/Users";
   static const String USER_ADDRESS_URI = "/Address/Q3edvqgsmPKnhDuM7PN6";
-  static const String USER_ADDRRESS_URI="/Orders/orders/";
+  static const String ORDERS_ADDRRESS_URI="/Orders/orders/";
 
   // payment uri
 
-  static const String PAYMOB_BASE_URI = "https://accept.paymob.com/api";
+  static const String PAYMOB_BASE_URI = "https://accept.paymobsolutions.com/api";
   static const String PAYMOB_AUTH = "/auth/tokens";
   static const String PAYMOB_ORDER_URI = "/ecommerce/orders";
   static const String PAYMOB_GET_PAYMENT_ID_URI = "/acceptance/payment_keys";

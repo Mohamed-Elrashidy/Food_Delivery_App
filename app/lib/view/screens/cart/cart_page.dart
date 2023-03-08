@@ -256,22 +256,9 @@ class CartPage extends StatelessWidget {
                               Get.toNamed(RouteHelper.addressRoute);
                              else
                               {
-                                UserModel user = Get.find<UserController>().userMOdel;
 
-                                Get.lazyPut(()=>PaymentClient());
-                                Get.lazyPut(() => PaymentRepo(paymentClient: Get.find()));
-                                Get.lazyPut(() => PaymentController(paymentRepo:Get.find()));
 
-                                await Get.find<PaymentController>().postOrder(AppConstants.PAYMOB_GET_PAYMENT_ID_URI,
-                                    firstName: user.name.split(' ')[0],
-                                    secondName: "",
-                                    email: user.email,
-                                    phone: user.phone,
-                                    price: Get.find<CartController>().totalCost().toString());
-                                await Timer(Duration(seconds: 5), () {
-                                  Get.to(()=>PaymobVisaScreen());
-                                controller.addtoHistory();});
-
+                                Get.to(()=>PaymobVisaScreen());
 
 
                              // Get.offNamed(RouteHelper.intial);

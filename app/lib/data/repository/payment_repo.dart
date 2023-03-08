@@ -15,6 +15,7 @@ class PaymentRepo{
     try{await paymentClient.postData(uri, {
       "api_key":AppConstants.PAYMOB_API_KEY
     }).then((value) {
+      print(value.body.toString());
       if(value.isOk)
       AppConstants.PAYMENT_FIRST_TOKEN=value.body["token"];
     });
@@ -36,15 +37,18 @@ class PaymentRepo{
   })async
   {
     await postAuth(AppConstants.PAYMOB_AUTH);
-   try{await paymentClient.postData(AppConstants.PAYMOB_ORDER_URI, {
+   try{
+
+     await paymentClient.postData(AppConstants.PAYMOB_ORDER_URI, {
      "auth_token":AppConstants.PAYMENT_FIRST_TOKEN,
      "amount_cents":price,
    }
     ).then((value) async {
+      print("this is the response"+value.body.toString());
      AppConstants.PAYMENT_ORDER_ID=value.body['id'].toString();
      showSnackBar(value.body['id'].toString());
 
-     await getPaymentRequestId(uri, firstName: firstName, secondName: secondName, email: email, phone: phone, price: price);
+     await getPaymentRequestId(AppConstants.PAYMOB_GET_PAYMENT_ID_URI, firstName: firstName, secondName: secondName, email: email, phone: phone, price: price);
 
    });
    print("payment order success");
@@ -68,7 +72,7 @@ class PaymentRepo{
   try{paymentClient.postData(uri,
  {
  "auth_token": AppConstants.PAYMENT_FIRST_TOKEN,
- "amount_cents": price*100,
+ "amount_cents": price,
  "expiration": 3600,
  "order_id": AppConstants.PAYMENT_ORDER_ID,
  "billing_data": {

@@ -1,6 +1,7 @@
 import 'package:app/controller/auth_controller.dart';
 import 'package:app/controller/cart_controller.dart';
 import 'package:app/controller/location_controller.dart';
+import 'package:app/controller/order_controller.dart';
 import 'package:app/controller/payment_controller.dart';
 import 'package:app/controller/popular_product_controller.dart';
 import 'package:app/controller/user_controller.dart';
@@ -9,6 +10,7 @@ import 'package:app/data/api/firebase_client.dart';
 import 'package:app/data/api/payment_client.dart';
 import 'package:app/data/repository/auth_repo.dart';
 import 'package:app/data/repository/location_repo.dart';
+import 'package:app/data/repository/order_repo.dart';
 import 'package:app/data/repository/popular_product_repo.dart';
 import 'package:app/data/repository/user_repo.dart';
 import 'package:get/get.dart';

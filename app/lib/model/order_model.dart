@@ -1,5 +1,4 @@
 import 'package:app/model/address_model.dart';
-import 'package:app/model/cart_model.dart';
 
 class OrderModel {
   late int id;
@@ -58,6 +57,7 @@ class OrderModel {
       this.failed,
       this.detalisCount,
       this.deliveryAddress});
+
   OrderModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
