@@ -35,7 +35,7 @@ class AppConstants {
   static const String PAYMOB_ORDER_URI = "/ecommerce/orders";
   static const String PAYMOB_GET_PAYMENT_ID_URI = "/acceptance/payment_keys";
   static String VISAVIEW =
-      "https://accept.paymob.com/api/acceptance/iframes/735718?payment_token=$PAYMENT_LAST_TOKEN";
+      "https://accept.paymob.com/api/acceptance/iframes/735718?payment_token=";
 // payment tokens
   static String PAYMENT_FIRST_TOKEN = "";
   static String PAYMENT_LAST_TOKEN = "";

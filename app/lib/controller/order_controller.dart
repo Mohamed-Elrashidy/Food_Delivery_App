@@ -17,17 +17,23 @@ class OrderController extends GetxController {
 
   getOrders()async
   {
+    currnetOrderList=[];
+    historyOrderList=[];
     List<dynamic> list= await orderRepo.getOrders();
     for(int i=0;i<list.length;i++)
       {
+
         OrderModel order=OrderModel.fromJson(list[i]);
-        if(order.accepted!=null||order.confirmed!=null||order.handover!=null||order.pending!=null||order.pickedUp!=null||order.processing!=null)
+        if(order.status.trim()=="Accepted")
           {
             currnetOrderList.add(order);
           }
-        else
+        else {
           historyOrderList.add(order);
+        }
       }
+    print("this is running "+currnetOrderList.toString());
+    print("this is the history " + historyOrderList.toString());
     update();
 
   }

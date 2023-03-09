@@ -23,99 +23,105 @@ class PaymobVisaScreen extends StatefulWidget {
 
 class _PaymobVisaScreenState extends State<PaymobVisaScreen> {
   late WebViewController _controller;
-  bool flag=false;
-
+  bool flag = false;
+  late bool completed;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     UserModel user = Get.find<UserController>().userMOdel;
-
-    Get.lazyPut(()=>PaymentClient());
+    completed = false;
+    Get.lazyPut(() => PaymentClient());
     Get.lazyPut(() => PaymentRepo(paymentClient: Get.find()));
-    Get.lazyPut(() => PaymentController(paymentRepo:Get.find()));
-     Get.find<PaymentController>().postOrder(AppConstants.PAYMOB_ORDER_URI,
+    Get.lazyPut(() => PaymentController(paymentRepo: Get.find()));
+    Get.find<PaymentController>().postOrder(AppConstants.PAYMOB_ORDER_URI,
         firstName: user.name.split(' ')[0],
         secondName: "",
         email: user.email,
         phone: user.phone,
         price: Get.find<CartController>().totalCost().toString());
-     Timer(Duration(seconds: 2), () {}
-      );
+    Timer(Duration(seconds: 3), () {print("this is the view${AppConstants.VISAVIEW}");});
   }
 
   @override
   Widget build(BuildContext context) {
-    print("last token is : "+AppConstants.PAYMENT_LAST_TOKEN);
+    print("last token is : ${AppConstants.VISAVIEW}${AppConstants.PAYMENT_LAST_TOKEN}");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.mainColor,
-        leading: IconButton(icon:Icon(Icons.arrow_back_ios),onPressed: (){
-          Get.back();
-        },
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            if (completed) {
+              Get.find<CartController>().addtoHistory();
 
+
+              OrderModel order = OrderModel(
+                  id: int.parse(AppConstants.PAYMENT_ORDER_ID),
+                  userId: Get.find<UserController>().userMOdel.id ?? 10);
+              Get.find<OrderController>().addOrder(order);
+            }
+            Get.back();
+          },
         ),
         title: Text('Paymob Visa'),
         centerTitle: true,
       ),
       body: Column(
-
-          children: [
-            SizedBox(height: Dimension.scaleHeight(50),),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: (){
-                    setState(() {
-                      flag=true;
-                    });
-                  },
-                  child: Container(
-          decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [ BoxShadow(
-                      blurRadius: 3,
-                      spreadRadius: 1,
-                      color: Colors.grey.withOpacity(0.2),
-                      offset: Offset(1, 1))]
-
+        children: [
+          SizedBox(
+            height: Dimension.scaleHeight(50),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                    child: BigText(text:"Paymob",color: Colors.blue,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    flag = true;
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                            blurRadius: 3,
+                            spreadRadius: 1,
+                            color: Colors.grey.withOpacity(0.2),
+                            offset: Offset(1, 1))
+                      ]),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: BigText(
+                    text: "Paymob",
+                    color: Colors.blue,
                   ),
                 ),
-              ],
-            ),
-            SizedBox(height: Dimension.scaleHeight(50),),
-            (flag)?
-              Expanded(
-                child: WebView(
-                initialUrl: AppConstants.VISAVIEW,
-                javascriptMode: JavascriptMode.unrestricted,
-                onWebViewCreated: (WebViewController webViewController) {
-                  _controller = webViewController;
+              ),
+            ],
+          ),
+          SizedBox(
+            height: Dimension.scaleHeight(50),
+          ),
+          (flag)
+              ? Expanded(
+                  child: WebView(
+                    initialUrl: AppConstants.VISAVIEW+AppConstants.PAYMENT_LAST_TOKEN,
+                    javascriptMode: JavascriptMode.unrestricted,
+                    onWebViewCreated: (WebViewController webViewController) {
+                      _controller = webViewController;
+                    },
+                    onPageFinished: (String _) {
+                      completed = true;
+                    },
 
-                },
 
-                 onPageFinished: (String s){
-                   Get.lazyPut(() => OrderRepo(firebaseClient: Get.find()));
-                   Get.lazyPut(() => OrderController(orderRepo:Get.find()));
-
-                   Get.find<CartController>().addtoHistory();
-                  OrderModel order = OrderModel(id: 1000, userId: Get.find<UserController>().userMOdel.id??10);
-                   Get.find<OrderController>().addOrder(order);
-                   print("finished **************************");
-                   print("your url is : "+AppConstants.VISAVIEW);
-
-                 },
-
-            ),
-              ):Container(),
-          ],
-        ),
-
+                  ),
+                )
+              : Container(),
+        ],
+      ),
     );
   }
 }

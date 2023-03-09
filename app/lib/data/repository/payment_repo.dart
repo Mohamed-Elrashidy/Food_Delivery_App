@@ -44,7 +44,6 @@ class PaymentRepo{
      "amount_cents":price,
    }
     ).then((value) async {
-      print("this is the response"+value.body.toString());
      AppConstants.PAYMENT_ORDER_ID=value.body['id'].toString();
      showSnackBar(value.body['id'].toString());
 
@@ -96,7 +95,9 @@ class PaymentRepo{
 
  }
   ).then((value) {
-showSnackBar(value.body['token'].toString());
+    print("this is the response"+value.body.toString());
+
+    showSnackBar(value.body['token'].toString());
     AppConstants.PAYMENT_LAST_TOKEN=value.body['token'];
   });
   print("id success");

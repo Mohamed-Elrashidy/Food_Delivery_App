@@ -47,6 +47,7 @@ Future<void>init()async{
   Get.lazyPut(() => AuthController(authRepo: Get.find()));
   Get.lazyPut(() => UserController(userRepo: Get.find()));
   Get.lazyPut(() => LocationController(locationRepo:Get.find()));
-
+  Get.lazyPut(() => OrderRepo(firebaseClient: Get.find()));
+  Get.lazyPut(() => OrderController(orderRepo: Get.find()));
 
 }
