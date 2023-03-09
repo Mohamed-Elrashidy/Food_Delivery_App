@@ -1,7 +1,7 @@
 # Food Delivery App 
 
 #### (Still working)
-### This a Flutter ECommerce app based on dbestech playlist link(https://youtube.com/playlist?list=PL3nPgdhXQtHfgtMpD_0EvJm-8LP3uNfc-)
+### This a Flutter ECommerce app based on dbestech playlist link(https://youtube.com/playlist?list=PL3nPgdhXQtHfgtMpD_0EvJm-8LP3uNfc-) . At first I was applying after the instructor then I find that all services were closed except get products , so I began to use firebase and know Feature and Implement it on my own 
 
 ## Architecture 
 #### Clean Architecture
