@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:app/base/custome_loader.dart';
 import 'package:app/controller/auth_controller.dart';
 import 'package:app/controller/user_controller.dart';
 import 'package:app/model/sign_up_body.dart';
-import 'package:app/model/user_model.dart';
 import 'package:app/routes/route_helper.dart';
 import 'package:app/utils/dimensionScale.dart';
 import 'package:app/view/widgets/TextFieldBuilder.dart';
@@ -78,7 +76,7 @@ class SignUpPage extends StatelessWidget {
 
             ],
           ),
-        ):CustomLoader();
+        ):Center(child: CustomLoader());
       },),
     );
   }

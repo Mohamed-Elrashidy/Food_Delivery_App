@@ -110,7 +110,8 @@ class PopularFoodDetails extends StatelessWidget {
                             borderRadius: BorderRadius.circular(
                                 Dimension.scaleHeight(20))),
                         child: BigText(
-                            text: "\$${productModel.price} | Add To Cart")),
+                            text: "\$${productModel.price!*(recommendProductControl.cartItem +
+                                recommendProductControl.quantity)} | Add To Cart",size:Dimension.scaleHeight(15)),),
                   )
                 ],
               ),

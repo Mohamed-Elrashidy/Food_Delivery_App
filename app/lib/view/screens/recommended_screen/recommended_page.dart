@@ -179,7 +179,8 @@ class RecommendedPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(
                                 Dimension.scaleHeight(20))),
                         child: BigText(
-                            text: "\$${productModel.price} | Add To Cart")),
+                            text: "\$${productModel.price!*(controller.cartItem +
+                                controller.quantity)} | Add To Cart",size: Dimension.scaleHeight(15),)),
                   )
                 ],
               ),
