@@ -14,6 +14,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
 
   await dep.init();
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
     Get.find<CartController>();
     Get.find<UserController>().initUserData();
 
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -45,6 +47,7 @@ class MyApp extends StatelessWidget {
       // home: MainFoodpage(),
       getPages: RouteHelper.routes,
       initialRoute: RouteHelper.splashScreen,
+
     );
   }
 }

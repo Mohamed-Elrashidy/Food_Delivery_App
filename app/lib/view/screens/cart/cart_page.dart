@@ -7,37 +7,55 @@ import 'package:app/controller/popular_product_controller.dart';
 import 'package:app/controller/recommended_product_controller.dart';
 import 'package:app/model/cart_model.dart';
 import 'package:app/utils/colors.dart';
+import 'package:app/view/widgets/TextFieldBuilder.dart';
 import 'package:app/view/widgets/small_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/cart_controller.dart';
+import '../../../controller/order_controller.dart';
 import '../../../controller/payment_controller.dart';
 import '../../../controller/user_controller.dart';
 import '../../../data/api/payment_client.dart';
+import '../../../data/repository/order_repo.dart';
 import '../../../data/repository/payment_repo.dart';
+import '../../../model/order_model.dart';
 import '../../../model/user_model.dart';
 import '../../../routes/route_helper.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/dimensionScale.dart';
 import '../../widgets/app_icon.dart';
 import '../../widgets/bit_text.dart';
+import '../../widgets/payment_method.dart';
 import '../payment/payment_page.dart';
 
 class CartPage extends StatelessWidget {
-  const CartPage({Key? key}) : super(key: key);
+  TextEditingController _textController = TextEditingController();
+
+  CartPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    try {
+      Get.find<OrderRepo>();
+    } catch (e) {
+      Get.lazyPut(() => OrderRepo(firebaseClient: Get.find()));
+    }
+    try {
+      Get.find<OrderController>();
+    } catch (e) {
+      Get.lazyPut(() => OrderController(orderRepo: Get.find()));
+    }
+
     return SafeArea(
         child: Scaffold(
-      bottomNavigationBar: bottomNavigationBarBuilder(),
+      bottomNavigationBar: bottomNavigationBarBuilder(context),
       body: Column(
         children: [
           AppBarWidget(),
           Container(
               height: Dimension.scaleHeight(
-                  Dimension.screenHeight - Dimension.scaleHeight(350)),
+                  Dimension.screenHeight - Dimension.scaleHeight(380)),
               child: GetBuilder<CartController>(
                 builder: (controller) {
                   if (controller.listOfCartItems.length > 0)
@@ -215,9 +233,10 @@ class CartPage extends StatelessWidget {
             )));
   }
 
-  Widget bottomNavigationBarBuilder() {
+  Widget bottomNavigationBarBuilder(BuildContext context) {
     return GetBuilder<CartController>(
         builder: (controller) => Container(
+              height: Dimension.scaleHeight(170),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(Dimension.scaleHeight(10)),
@@ -228,46 +247,14 @@ class CartPage extends StatelessWidget {
                   vertical: Dimension.scaleHeight(10),
                   horizontal: Dimension.scaleWidth(10)),
               child: (controller.listOfCartItems.length > 0)
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ? Column(
                       children: [
-                        Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(
-                                    Dimension.scaleHeight(16))),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: Dimension.scaleWidth(5),
-                                ),
-                                BigText(
-                                    text: '\$ ' +
-                                        controller.totalCost().toString())
-                              ],
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                vertical: Dimension.scaleHeight(10),
-                                horizontal: Dimension.scaleWidth(10))),
                         InkWell(
-                          onTap: () async {
-                            if (Get.find<AuthController>().userLoggedIn()) {
-                             if(Get.find<LocationController>().addressList.isEmpty)
-                              Get.toNamed(RouteHelper.addressRoute);
-                             else
-                              {
-
-
-                                Get.to(()=>PaymobVisaScreen());
-
-
-                             // Get.offNamed(RouteHelper.intial);
-                              }
-                            } else {
-                              Get.toNamed(RouteHelper.singInPage);
-                            }
+                          onTap: () {
+                            showModalBottomSheetBuilder(context);
                           },
                           child: Container(
+                              width: double.infinity,
                               padding: EdgeInsets.symmetric(
                                   vertical: Dimension.scaleHeight(20),
                                   horizontal: Dimension.scaleWidth(15)),
@@ -275,11 +262,152 @@ class CartPage extends StatelessWidget {
                                   color: AppColors.mainColor,
                                   borderRadius: BorderRadius.circular(
                                       Dimension.scaleHeight(20))),
-                              child: BigText(text: "Check Out")),
-                        )
+                              child: Center(
+                                  child: BigText(
+                                text: "Payment Options",
+                                color: Colors.white,
+                              ))),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(
+                                        Dimension.scaleHeight(16))),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: Dimension.scaleWidth(5),
+                                    ),
+                                    BigText(
+                                        text: '\$ ' +
+                                            controller.totalCost().toString())
+                                  ],
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: Dimension.scaleHeight(10),
+                                    horizontal: Dimension.scaleWidth(10))),
+                            InkWell(
+                              onTap: () async {
+                                if (Get.find<AuthController>().userLoggedIn()&&Get.find<OrderController>().paymentMethod=="Online Payment") {
+                                  if (Get.find<LocationController>()
+                                      .addressList
+                                      .isEmpty)
+                                    Get.toNamed(RouteHelper.addressRoute);
+                                  else {
+                                    Get.to(() => PaymobVisaScreen());
+
+                                    // Get.offNamed(RouteHelper.intial);
+                                  }
+                                } else if(Get.find<AuthController>().userLoggedIn())
+                                  {
+                                    Get.find<CartController>().addtoHistory();
+
+                                    OrderModel order = OrderModel(
+                                        id: 100,
+                                        userId: Get.find<UserController>().userMOdel.id ?? 10,
+                                        orderPayment: Get.find<OrderController>().paymentMethod,
+                                        orderNote: _textController.text
+
+                                    );
+                                    Get.find<OrderController>().addOrder(order);
+                                  }
+                                else {
+                                  Get.toNamed(RouteHelper.singInPage);
+                                }
+                              },
+                              child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: Dimension.scaleHeight(20),
+                                      horizontal: Dimension.scaleWidth(15)),
+                                  decoration: BoxDecoration(
+                                      color: AppColors.mainColor,
+                                      borderRadius: BorderRadius.circular(
+                                          Dimension.scaleHeight(20))),
+                                  child: BigText(
+                                    text: "Check Out",
+                                    color: Colors.white,
+                                  )),
+                            )
+                          ],
+                        ),
                       ],
                     )
                   : Container(height: Dimension.scaleHeight(85)),
             ));
+  }
+
+  Future showModalBottomSheetBuilder(BuildContext context) {
+    return showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(25.0),
+          ),
+        ),
+        builder: (_) {
+          return Container(
+            height: Dimension.scaleHeight(400),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Dimension.scaleHeight(50))),
+            child: SingleChildScrollView(child: GetBuilder<OrderController>(
+              builder: (controller) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PaymentMethod(Icons.money, "Cash Payment",
+                        Icons.check_circle, "you pay after getting delivery"),
+                    PaymentMethod(Icons.paypal_outlined, "Online Payment",
+                        Icons.check_circle, "safest and fastest way to pay"),
+                    SizedBox(
+                      height: Dimension.scaleHeight(15),
+                    ),
+                    Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        child: BigText(text: "Delivery Options")),
+                    Row(
+                      children: [
+                        Radio(
+                            value: controller.deliveryMethod,
+                            groupValue: "Home Delivery",
+                            onChanged: (value) {
+                              controller.changeDeliveryMehtod("Home Delivery");
+                            }),
+                        BigText(text: "Home Delivery (\$1.2)")
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Radio(
+                            value: controller.deliveryMethod,
+                            groupValue: "Take away",
+                            onChanged: (value) {
+                              controller.changeDeliveryMehtod("Take away");
+                            }),
+                        BigText(text: "Take away (Free)")
+                      ],
+                    ),
+                    SizedBox(
+                      height: Dimension.scaleHeight(20),
+                    ),
+                    Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        child: BigText(text: "Additional info")),
+                    TextFieldBuilder(
+                      controller: _textController,
+                      prefixIcon: Icons.info_outline,
+                      hintText: "Additional info",
+                      maxline: 3,
+                    )
+                  ],
+                );
+              },
+            )),
+          );
+        },
+        context: context);
   }
 }

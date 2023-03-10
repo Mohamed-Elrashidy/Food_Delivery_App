@@ -10,6 +10,22 @@ class OrderController extends GetxController {
   OrderController({required this.orderRepo});
   List<OrderModel> historyOrderList=[];
   List<OrderModel> currnetOrderList=[];
+  String _paymentMethod="Cash Payment";
+  String get paymentMethod=>_paymentMethod;
+  String _deliveryMethod ="Home Delivery";
+  String get deliveryMethod=>_deliveryMethod;
+
+    changeDeliveryMehtod(String method)
+    {
+      _deliveryMethod= method;
+      update();
+    }
+    changePaymentMethod(String method)
+    {
+      _paymentMethod=method;
+      update();
+    }
+
   addOrder(OrderModel order)
   {
     orderRepo.addOrder(order.toJson());

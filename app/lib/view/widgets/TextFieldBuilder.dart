@@ -6,14 +6,18 @@ class TextFieldBuilder extends StatelessWidget {
   final TextEditingController controller;
   final IconData prefixIcon;
   final String hintText;
+  late int maxline;
   bool isObsecure;
   bool currObsecure = true;
   TextFieldBuilder(
       {super.key,
-      required this.controller,
+      this.maxline=1,
+        required this.controller,
       required this.prefixIcon,
       required this.hintText,
-      this.isObsecure = false});
+      this.isObsecure = false
+
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +34,7 @@ class TextFieldBuilder extends StatelessWidget {
                 offset: Offset(1, 1))
           ]),
       child: TextField(
+        maxLines: maxline,
         obscureText: isObsecure,
         controller: controller,
         decoration: InputDecoration(

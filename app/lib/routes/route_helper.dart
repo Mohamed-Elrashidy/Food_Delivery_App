@@ -40,7 +40,7 @@ class RouteHelper {
     ),
     GetPage(
         name: cartPage,
-        page: () => const CartPage(),
+        page: () =>  CartPage(),
         transition: Transition.fade),
     GetPage(
         name: singInPage,

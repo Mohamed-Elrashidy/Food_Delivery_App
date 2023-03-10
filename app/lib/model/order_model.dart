@@ -6,7 +6,7 @@ class OrderModel {
   late int userId;
   double? orderAmount;
   String? orderStatus;
-
+  late String orderPayment;
   String? paymentStatus;
   double? totalTaxAmount;
   String? orderNote;
@@ -27,6 +27,7 @@ class OrderModel {
   OrderModel({
     required this.id,
     required this.userId,
+     this.orderPayment="cash",
     this.orderAmount,
     this.orderStatus,
     this.paymentStatus,
@@ -46,15 +47,16 @@ class OrderModel {
   });
 
   OrderModel.fromJson(Map<String, dynamic> json) {
+    orderPayment=json['order_payment'];
     id = json['id'];
     userId = json['user_id'];
-    orderAmount = json['oreder_amount'];
+    orderAmount = json['order_amount'];
     paymentStatus = json['payment_status'] ?? "pending";
     totalTaxAmount = 10.0;
     orderNote = json['order_note'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    orderStatus = json['oreder_status'];
+    orderStatus = json['order_status'];
     deliveryCharge = 10.0;
     scheduleAt = json['shcedule_at'] ?? "";
     otp = json['otp'];
@@ -73,13 +75,13 @@ class OrderModel {
     json['status'] = status;
     json['id'] = id;
     json['user_id'] = userId;
-    json['oreder_amount'] = orderAmount;
+    json['order_amount'] = orderAmount;
     json['payment_status'] = paymentStatus;
-
+    json['order_payment']=orderPayment;
     json['order_note'] = orderNote;
     json['created_at'] = createdAt;
     json['updated_at'] = updatedAt;
-    json['oreder_status'] = orderStatus;
+    json['order_status'] = orderStatus;
     json['shcedule_at'] = scheduleAt;
     json['otp'] = otp;
     json['scheduled'] = scheduled;

@@ -55,10 +55,10 @@ class _PaymobVisaScreenState extends State<PaymobVisaScreen> {
             if (completed) {
               Get.find<CartController>().addtoHistory();
 
-
               OrderModel order = OrderModel(
                   id: int.parse(AppConstants.PAYMENT_ORDER_ID),
-                  userId: Get.find<UserController>().userMOdel.id ?? 10);
+                  userId: Get.find<UserController>().userMOdel.id ?? 10,
+                  orderPayment: Get.find<OrderController>().paymentMethod);
               Get.find<OrderController>().addOrder(order);
             }
             Get.back();
