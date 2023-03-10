@@ -29,7 +29,7 @@ class _PaymobVisaScreenState extends State<PaymobVisaScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    UserModel user = Get.find<UserController>().userMOdel;
+    UserModel user = Get.find<UserController>().userMOdel!;
     completed = false;
     Get.lazyPut(() => PaymentClient());
     Get.lazyPut(() => PaymentRepo(paymentClient: Get.find()));

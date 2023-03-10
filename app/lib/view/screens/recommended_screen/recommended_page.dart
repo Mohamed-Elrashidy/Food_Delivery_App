@@ -32,21 +32,30 @@ class RecommendedPage extends StatelessWidget {
             SliverAppBar(
               automaticallyImplyLeading: false,
               flexibleSpace: FlexibleSpaceBar(
-                background: Image.network(
-                  AppConstants.BASE_URI +
-                      AppConstants.UPLOAD_URL +
-                      productModel.img!,
-                  fit: BoxFit.cover,
+                background: Stack(
+                  children: [
+                    Container(
+                      height: Dimension.scaleHeight(280),
+                      width: Dimension.screenWidth,
+                      child: Image.network(
+                        AppConstants.BASE_URI +
+                            AppConstants.UPLOAD_URL +
+                            productModel.img!,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: Dimension.scaleWidth(20),
+                            vertical: Dimension.scaleHeight(25)),
+                        child: AppBarWidgets())
+                  ],
                 ),
               ),
-              expandedHeight: Dimension.scaleHeight(250),
+
+              expandedHeight: Dimension.scaleHeight(245),
               pinned: true,
-              title: Container(
-                  color: Colors.transparent,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [AppBarWidgets()],
-                  )),
+
             ),
             SliverList(
                 delegate: SliverChildBuilderDelegate(
@@ -125,6 +134,7 @@ class RecommendedPage extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: Dimension.scaleHeight(10),),
             Container(
               decoration: BoxDecoration(
                 //  color:Color.fromARGB(16, 217, 217, 222),
@@ -174,6 +184,7 @@ class RecommendedPage extends StatelessWidget {
                 ],
               ),
             ),
+
           ],
         );
       },

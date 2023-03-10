@@ -70,4 +70,8 @@ class AuthRepo {
     }
   return data;
   }
+  signOut()
+  {
+    firebaseClient.signOut();
+  }
 }

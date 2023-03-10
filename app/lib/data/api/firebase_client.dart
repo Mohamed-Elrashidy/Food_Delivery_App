@@ -101,4 +101,8 @@ return val;
 
     return recivedData;
   }
+  signOut()
+  {
+    FirebaseAuth.instance.signOut();
+  }
 }

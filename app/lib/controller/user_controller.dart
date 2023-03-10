@@ -11,7 +11,7 @@ class UserController extends GetxController implements GetxService {
   UserController({required this.userRepo});
 
   bool _isLoading = false;
-  late UserModel _userModel;
+   late UserModel _userModel;
 
   bool get isLoading => _isLoading;
   UserModel get userMOdel => _userModel;
@@ -42,6 +42,6 @@ class UserController extends GetxController implements GetxService {
     if (data != '') {
       _userModel = UserModel.fromJson(jsonDecode(data));
     }
-    update();
+
   }
 }

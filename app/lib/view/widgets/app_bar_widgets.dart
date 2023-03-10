@@ -20,6 +20,7 @@ class AppBarWidgets extends StatelessWidget {
     RecommendedProductController recommendedProductControl=Get.find();
          return GetBuilder< CartController>(builder: (_) {
       return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           AppIcon(
