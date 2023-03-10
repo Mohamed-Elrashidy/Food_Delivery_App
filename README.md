@@ -20,4 +20,4 @@
 
 
 ## Problems
-#### Authentication service was locked at laravel backend , so I used firebase to manage authentication and store data about user such as locations 
+#### Authentication service was locked at laravel backend , so I used firebase to manage authentication , store data about user such as locations and orders
