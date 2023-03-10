@@ -32,28 +32,32 @@ class _OrderMainPageState extends State<OrderMainPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.mainColor,
-          bottom: (loggedIn)
-              ? TabBar(controller: _tabController, tabs: [
+        appBar: (loggedIn)
+            ? AppBar(
+                backgroundColor: AppColors.mainColor,
+                bottom: TabBar(controller: _tabController, tabs: [
                   BigText(text: "running", color: Colors.white),
                   BigText(text: "history", color: Colors.white)
-                ])
-              : TabBar(
-                  tabs: [],
+                ]),
+                title: BigText(
+                  text: "My Orders",
+                  color: Colors.white,
                 ),
-          title: BigText(
-            text: "My Orders",
-            color: Colors.white,
-          ),
-          leading: Container(),
-          centerTitle: true,
-        ),
+                leading: Container(),
+                centerTitle: true,
+              )
+            : AppBar(
+                backgroundColor: AppColors.mainColor,
+                title: BigText(
+                  text: "My Orders",
+                  color: Colors.white,
+                ),
+                leading: Container(),
+                centerTitle: true,
+              ),
         body: (!loggedIn)
             ? SignInStartWidget()
-            : TabBarView(
-            controller: _tabController,
-            children: [
+            : TabBarView(controller: _tabController, children: [
                 OrderView(running: true),
                 OrderView(running: false)
               ]));
