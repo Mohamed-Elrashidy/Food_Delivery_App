@@ -69,13 +69,13 @@ class SignUpPage extends StatelessWidget {
               ),
               signUpButton(),
               SizedBox(height: Dimension.scaleHeight(20)),
-              RichTextBuilder("Have an account already?"),
+              GestureDetector(onTap:(){
+                Get.back();
+              },child: RichTextBuilder("Have an account already?")),
               SizedBox(
                 height: Dimension.screenHeight * 0.05,
               ),
-              RichTextBuilder("Sign up using one of the following methods"),
-              SizedBox(height: Dimension.scaleWidth(20)),
-              signUpMethodsBuilder()
+
             ],
           ),
         ):CustomLoader();

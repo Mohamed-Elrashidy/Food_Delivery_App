@@ -109,7 +109,7 @@ class SignInPage extends StatelessWidget {
         SmallText(text: "Don\'t hava an account?"),
         GestureDetector(
           onTap: () {
-            Get.offNamed(RouteHelper.singUpPage);
+            Get.toNamed(RouteHelper.singUpPage);
           },
           child: Text(
             "Create",
