@@ -3,7 +3,7 @@
 
 ## This a Flutter ECommerce app based on dbestech Food Delivery App playlist. 
  * ### Target of the application
-      *  #### Be better at _Dart programming language_
+      * #### Be better at _Dart programming language_
       * #### Be better at _Flutter Framework_
       * #### Learn how to deal with _API_
       * #### Learn how to deal with _Firebase_
@@ -20,11 +20,6 @@
       * #### choose between two options take away or home delivery
       * #### choose between two options pay with visa or cash
 
-
-
-
-* ### Architecture 
-    * #### Clean Architecture
 
 * ### Technology
      * #### Flutter
